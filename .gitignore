@@ -29,8 +29,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-MANIFEST.in
-setup.py
+#MANIFEST.in
+#setup.py
 setup_Resp.py
 .DS_Store
 

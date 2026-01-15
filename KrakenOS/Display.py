@@ -268,6 +268,143 @@ def display3d_old(SYSTEM, RAYS, view=0, inline=False,     BackgCol= 'white', Bac
 
     [cpx,cpy,cpz]=p.camera_position
 
+
+###############################################################################
+
+def display3d_colab_plus(
+    SYSTEM,
+    RAYS,
+    view=0,
+    inline=True,                 # lo dejo por compatibilidad con tu API
+    BackgCol="white",
+    BackgColTop="white",
+    GridCol="black",
+    nrays=0,
+    window_size=(1200, 700),
+    show_grid=True,
+    show_axes=True,
+    text="KrakenOS (Colab interactive)",
+    html_filename=None,          # si lo pones, guarda también el html
+    close=True,                  # cierra el plotter al final (recomendado)
+):
+    """
+    display3d_colab_plus: versión INTERACTIVA para Google Colab (HTML embebido).
+
+    - Reutiliza plot3d() y rayplot3d() (misma escena que display3d()).
+    - NO usa pv.start_xvfb().
+    - NO llama p.show() (en Colab puede destruir el render window).
+    - Genera un HTML interactivo con p.export_html(None) y lo muestra.
+
+    Requisitos típicos en Colab:
+        pip install "pyvista[jupyter]"
+    """
+
+    import pyvista as pv
+
+    # Mostrar HTML en notebook
+    try:
+        from IPython.display import HTML, display
+        _HAS_IPY = True
+    except Exception:
+        _HAS_IPY = False
+
+    # --- Normaliza inputs a listas (como en tu display3d_colab) ---
+    SYSTEM_list = SYSTEM if isinstance(SYSTEM, list) else [SYSTEM]
+    RAYS_list   = RAYS if isinstance(RAYS, list) else [RAYS]
+
+    # --- Asegura sólidos (misma filosofía que display3d / display3d_colab) ---
+    for sys_ in SYSTEM_list:
+        try:
+            if hasattr(sys_, "Pr3D") and getattr(sys_.Pr3D, "ExistSolid", 1) == 0:
+                bld0 = getattr(sys_, "BUILD", None)
+                sys_.BUILD = 1
+                sys_.build()
+                if bld0 is not None:
+                    sys_.BUILD = bld0
+        except Exception:
+            pass
+
+    # --- Plotter (sin Xvfb, sin off_screen) ---
+    ST1 = "KrakenOS Colab Interactive"
+    OPA = 0.99
+
+    p = pv.Plotter(
+        shape=(1, 1),
+        title=ST1,
+        notebook=True,
+        window_size=window_size,
+    )
+
+    # --- Dibuja escena KrakenOS (IGUAL que tu display3d) ---
+    for sys_ in SYSTEM_list:
+        plot3d(sys_, view, p, OPA)
+
+    for rays_ in RAYS_list:
+        rayplot3d(rays_, view, p, OPA, nrays)
+
+    # --- Estética (muy similar a display3d) ---
+    if show_axes:
+        try:
+            p.add_axes(line_width=4)
+        except Exception:
+            pass
+
+    try:
+        cx, cy, cz = p.center
+        p.set_focus([cx, cy, cz])
+        p.camera_position = [-1.0, 0.5, 1.0]
+        p.set_viewup([0, 1.0, 0])
+    except Exception:
+        pass
+
+    try:
+        p.enable_anti_aliasing()
+    except Exception:
+        pass
+
+    try:
+        p.set_background(BackgCol, top=BackgColTop)
+    except Exception:
+        pass
+
+    if text:
+        try:
+            p.add_text(text, position="upper_left", font_size=20, color="royalblue")
+        except Exception:
+            pass
+
+    if show_grid:
+        try:
+            p.show_grid(font_size=6, color=GridCol)
+        except Exception:
+            pass
+
+    # Render “suave” sin show()
+    try:
+        p.render()
+    except Exception:
+        pass
+
+    # --- Exporta HTML interactivo ---
+    # OJO: export_html(None) regresa un buffer; NO llames p.show() antes.
+    buf = p.export_html(None)
+    html_str = buf.getvalue()
+
+    if html_filename:
+        with open(html_filename, "w", encoding="utf-8") as f:
+            f.write(html_str)
+
+    if _HAS_IPY:
+        display(HTML(html_str))
+
+    if close:
+        try:
+            p.close()
+        except Exception:
+            pass
+
+    return html_str
+
 ###############################################################################
 def display3d_colab(
     SYSTEM,

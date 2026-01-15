@@ -220,10 +220,24 @@ class Prerequisites():
 
                 disc = pv.Disc(center=[0.0, 0.0, 0.0], inner=INNER, outer=OUTER, normal=(0, 0, 1), r_res = r_RES, c_res = (RES * 2))
                 L_te_h = self.Flat2SigmaSurface(disc, j)
+
+
+
                 if (self.SDT[j].InDiameter > 0):
-                    L_te_h = L_te_h.delaunay_2d().edge_source = L_te_h
+                    tri = L_te_h.delaunay_2d()
+                    # Guardar referencia (si la necesitabas) como atributo PRIVADO
+                    tri._edge_source = L_te_h
+                    L_te_h = tri
                 else:
                     L_te_h = L_te_h.delaunay_2d()
+
+
+
+
+                # if (self.SDT[j].InDiameter > 0):
+                #     L_te_h = L_te_h.delaunay_2d().edge_source = L_te_h
+                # else:
+                #     L_te_h = L_te_h.delaunay_2d()
             else:
                 udashape =self.SDT[j].UDA_Obj.UDA_Surf
                 L_te_h = self.Flat2SigmaSurface(udashape, j)
@@ -345,8 +359,8 @@ class Prerequisites():
         cant.compute_normals(cell_normals=True, point_normals=True, split_vertices=True, flip_normals=False, consistent_normals=True, auto_orient_normals=False, non_manifold_traversal=True, feature_angle=30.0, inplace = False)
 
         return cant
-    
-    
+
+
     def Prerequisites3D_UDA(self):
         for j in range(0, self.n):
             if (self.SDT[j].UDA != 'None'):
@@ -359,7 +373,7 @@ class Prerequisites():
         """Prerequisites3DSolids.
         """
         print("Creating solid objects for optical elements")
-        
+
         self.GlassOnSide = []
         self.PreTypeTotal = []
         self.TypeTotal = []
@@ -374,7 +388,7 @@ class Prerequisites():
 
             if self.SDT[j].Const[1] == 0:
                 (lens, masked) = self.Face3D(j)
-                
+
 
 
 
@@ -442,7 +456,7 @@ class Prerequisites():
         x2 = x2 + self.SDT[j].SubAperture[2]
         y2 = y2 + self.SDT[j].SubAperture[1]
 
-        
+
         points2 = np.c_[(x2, y2, z2)]
         L_te = pv.PolyData(points2, force_float=False)
         L_te = self.GeometricRotatAndTran(L_te, j)
@@ -512,7 +526,7 @@ class Prerequisites():
 
         return cant
 
-            
+
     def Prerequisites3DSolidsDummy(self):
         """Prerequisites3DSolidsDummy.
         """

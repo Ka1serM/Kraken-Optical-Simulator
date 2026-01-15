@@ -7,14 +7,6 @@ import sys
 from matplotlib import rc
 from typing import Tuple
 
-from matplotlib import font_manager
-
-def set_font_safe(preferred="Times New Roman", fallback="DejaVu Serif"):
-    available = {f.name for f in font_manager.fontManager.ttflist}
-    plt.rcParams["font.family"] = preferred if preferred in available else fallback
-
-set_font_safe()
-
 
 
 def rgba2rgb(rgba, background=[255, 255, 255]):

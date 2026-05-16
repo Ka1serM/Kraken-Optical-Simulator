@@ -1,15 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Dispersion from Abbe number data.
+"""Example: dispersion from Abbe-number material data.
 
-Shows how refractive-index dispersion can be described from Abbe-number-style material information.
+This example shows alternative ways to provide material information through the
+`Glass` attribute, including catalog names, numeric refractive indices, and
+Abbe-number-style strings.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how ordinary catalog glass names are used
+- how direct refractive-index values can be supplied
+- how `nvk` and `___BLANK` strings encode refractive index and dispersion data
+- how a three-wavelength ray bundle reveals chromatic behavior
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D ray plot of the doublet traced at three wavelengths
+
+Didactic note:
+- several alternative `L1c` definitions are intentionally left commented. They
+  document supported input formats for `surf.Glass`; uncomment only one at a
+  time when experimenting.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

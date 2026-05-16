@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Reflection diffraction grating.
+"""Example: reflection diffraction grating.
 
-Traces a ray bundle through a reflective grating and shows the angular separation produced by the selected order.
+This example adds a reflective grating surface after a lens group and traces a
+multi-wavelength ray bundle to show angular separation by diffraction order.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the grating parameters and diffraction order.
+What this example teaches:
+- how to use `Glass = "MIRROR"` for a reflective grating
+- how `Grating_D`, `Diff_Ord`, and `Grating_Angle` are assigned
+- how wavelength changes the diffracted ray direction
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of the reflected and diffracted ray bundle
+
+Didactic note:
+- the commented `Surface_type` line is an optional low-level experiment and is
+  not required for the standard example.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np
@@ -58,6 +67,8 @@ Dif_Obj.Diameter = 30.0
 Dif_Obj.Grating_D = 1.0
 Dif_Obj.Diff_Ord = 1
 Dif_Obj.Grating_Angle = 45.0
+# Optional low-level experiment:
+# The standard grating behavior is already defined by the fields above.
 # Dif_Obj.Surface_type = 1
 
 

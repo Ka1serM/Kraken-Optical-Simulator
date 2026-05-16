@@ -1,19 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Single STL solid object.
+"""Example: single STL solid object in a telescope-like system.
 
-Loads one STL solid object and traces rays through or around the modeled geometry.
+This example loads a packaged STL prism-like object, places it in a reflective
+system, and traces non-sequential rays through the solid geometry.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
-- the STL geometry file and its orientation in the optical path.
+What this example teaches:
+- how to load packaged STL geometry with `importlib.resources`
+- how to attach STL geometry to `Solid_3d_stl`
+- how `NsTrace` is used for solid-object interactions
+- how `NsLimit` and `energy_probability` affect non-sequential tracing
 
-Required local files:
-- Prisma.stl
+Required packaged file:
+- `KrakenOS/Examples/Prisma.stl`
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of the telescope-like system and traced rays
+- the effective focal length printed to the console
+
+Didactic note:
+- the commented debug print is intentionally left as an optional inspection
+  point inside the ray loop.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 # import os
@@ -111,6 +122,8 @@ for gg in range(0, 10):
             if r < rad:
                 tet = 0.0
                 pSource_0 = [x_0, y_0, 0.0]
+# Optional didactic debug print:
+# Uncomment while studying the ray loop, but leave disabled for normal runs.
                 # print("-...............")
                 dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
                 W = 0.633

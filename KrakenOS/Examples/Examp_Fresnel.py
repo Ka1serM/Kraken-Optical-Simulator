@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Fresnel lens from a sampled radial profile.
+"""Example: Fresnel lens from a sampled radial profile.
 
-Loads a radial surface description and traces rays through a Fresnel-type profile.
+This example loads a packaged radial profile file, converts it into a callable
+surface function, and attaches it to a surface with `ExtraData`.
 
-What to look at:
-- the external profile file.
-- how ExtraData is attached to the surface.
-- the difference between the 2D and 3D views.
+What this example teaches:
+- how to load example data with `importlib.resources`
+- how a sampled radial profile can be converted into a Fresnel-like surface
+- why fine derivative precision can matter for structured optical elements
+- how to compare 3D and 2D visualization of the traced rays
 
-Required local files:
-- R1064_F1800.txt
+Required packaged file:
+- `KrakenOS/Examples/R1064_F1800.txt`
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view and a 2D view of rays through the Fresnel profile
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys

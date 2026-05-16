@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Array of STL solid objects.
+"""Example: generated array of solid mirror elements.
 
-Places several STL-based solid objects in the optical path and traces the non-sequential ray behavior.
+This example builds an array of small PyVista cube elements, combines them into
+one solid object, and traces one ray per array element with non-sequential
+reflection.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
-- the STL geometry file and its orientation in the optical path.
+What this example teaches:
+- how to generate solid geometry programmatically with PyVista
+- how to combine many elements into one object for `Solid_3d_stl`
+- how a solid mirror array can be tested with non-sequential tracing
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
-"""
+Expected output:
+- a Matplotlib spot plot
+- a 3D view of the generated mirror array and traced rays
 
-"""
-Using stl or vtk solid elements in non-sequential mode is not accurate,
- it is better to use this shape in applications like lighting,
- note that the spot diagram here should be a dot
+Didactic note:
+- STL/VTK solid elements in non-sequential mode are approximate. This example is
+  best treated as a lighting or geometry demonstration; the ideal spot diagram
+  should collapse toward a dot.
+- the STL save lines are intentionally commented to avoid generating local
+  files during a normal run.
 
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import matplotlib.pyplot as plt
@@ -67,6 +74,8 @@ for A in range(-n, n + 1):
 
         element0 = element0 + element1
 
+# Optional didactic export:
+# Uncomment these lines to save the generated solid for inspection in CAD tools.
 # element0.save("salida.stl")
 # direc = r"salida.stl"
 

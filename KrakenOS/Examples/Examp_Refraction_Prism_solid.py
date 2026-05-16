@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Solid prism refraction.
+"""Example: non-sequential refraction through an in-memory solid prism.
 
-Uses non-sequential tracing through a solid prism model.
+This example builds prism geometry directly with PyVista, assigns it to a
+KrakenOS solid surface, and traces rays through it with `NsTrace`.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
-- the grating parameters and diffraction order.
-- the STL geometry file and its orientation in the optical path.
+What this example teaches:
+- how to build a `pyvista.PolyData` solid inside an example
+- how to pass an in-memory solid object to `Solid_3d_stl`
+- how coating data can be attached to the solid surface
+- how non-sequential tracing handles the solid prism interaction
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D view of the solid-prism ray trace
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

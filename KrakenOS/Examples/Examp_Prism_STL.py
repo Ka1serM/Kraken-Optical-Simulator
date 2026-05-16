@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-STL prism trace.
+"""Example: non-sequential trace through an STL prism.
 
-Loads a prism from an STL file and traces rays through the solid object.
+This example loads a packaged STL prism, assigns optical material properties to
+the solid, and traces pupil-generated rays through the object with
+non-sequential tracing.
 
-What to look at:
-- how the entrance pupil or ray bundle is calculated.
-- the difference between sequential Trace and non-sequential NsTrace.
-- the STL geometry file and its orientation in the optical path.
+What this example teaches:
+- how `Solid_3d_stl` attaches STL geometry to a `surf`
+- how `PupilCalc` can generate rays for a solid-object system
+- how `NsTraceLoop` traces a bundle through non-sequential geometry
 
-Required local files:
-- prism.stl
+Required packaged file:
+- `KrakenOS/Examples/prism.stl`
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D view with arrows and a 3D view of the prism trace
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

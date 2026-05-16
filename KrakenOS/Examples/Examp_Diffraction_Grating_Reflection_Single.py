@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Single-ray reflection grating trace.
+"""Example: single-ray reflection grating trace.
 
-Traces one ray through a reflective diffraction grating so the sign conventions and diffraction order are easy to inspect.
+This example traces one ray through a reflective diffraction grating at several
+wavelengths, making the sign convention and diffracted coordinates easy to
+inspect.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the grating parameters and diffraction order.
+What this example teaches:
+- how to define a reflective grating with `Glass = "MIRROR"`
+- how grating spacing in micrometers relates to line density
+- how the image-plane intersection changes with wavelength
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- printed image-plane coordinates for each wavelength
+- a 3D view of the traced diffracted rays
+
+Units:
+- distances are in millimeters
+- wavelengths and grating spacing are in micrometers
 """
 
 import numpy as np

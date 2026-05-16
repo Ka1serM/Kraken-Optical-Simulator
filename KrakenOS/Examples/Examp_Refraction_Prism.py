@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Basic prism refraction.
+"""Example: basic prism refraction.
 
-Builds a simple prism model and traces a ray bundle through the refracting surfaces.
+This example builds a simple tilted-surface prism before a lens group and
+traces a multi-wavelength ray bundle through the refracting surfaces.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the grating parameters and diffraction order.
+What this example teaches:
+- how prism faces can be represented with tilted flat surfaces
+- how `AxisMove = 0` keeps the coordinate transformation from moving the axis
+- how three wavelengths separate after prism refraction
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D view of the prism, lens group, and traced chromatic ray bundle
+
+Didactic note:
+- the shorter prism-only surface list is intentionally left commented so users
+  can compare the prism alone against the prism-plus-lens configuration.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np
@@ -53,6 +62,8 @@ P_Ima.Diameter = 30.0
 P_Ima.NumLabel = 0
 
 A = [P_Obj, Prism_f1, Prism_f2, L1_fa, L1_fb, L1_fc, P_Ima]
+# Optional didactic variant:
+# Uncomment this line instead to inspect the prism alone without the lens group.
 # A = [P_Obj, Prism_f1, Prism_f2,  P_Ima]
 Config = Kos.Setup()
 

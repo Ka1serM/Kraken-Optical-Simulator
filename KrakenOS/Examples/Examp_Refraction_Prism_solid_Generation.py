@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Generated solid prism refraction.
+"""Example: generate and trace a solid prism geometry.
 
-Generates or loads the solid-prism geometry used by a non-sequential refraction example.
+This example generates a prism solid with PyVista and immediately traces a
+multi-wavelength ray bundle through it using non-sequential tracing.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
-- the grating parameters and diffraction order.
-- the STL geometry file and its orientation in the optical path.
+What this example teaches:
+- how prism vertices and faces can be assembled into `pyvista.PolyData`
+- how generated solid geometry can be passed to `Solid_3d_stl`
+- how a non-sequential ray bundle interacts with the generated prism
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D view of the generated solid-prism ray trace
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Glass catalog loading order.
+"""Example: inspect glass catalog loading order.
 
-Checks how KrakenOS prioritizes and loads glass catalogs when several catalog paths are available.
+This example prints the deterministic glass catalog order used by KrakenOS and
+shows what happens when a glass name appears in several loaded catalogs.
 
-What to look at:
-- the catalog search order.
-- how repeated glass names are resolved.
-- the printed diagnostic output.
+What this example teaches:
+- how `Setup().GlassCat` stores the active catalog list
+- why catalog priority matters when a glass name is duplicated
+- how to inspect which catalogs contain a given glass name
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- the first loaded catalogs
+- all catalogs containing the selected glass name
+- the first matching catalog that KrakenOS will use by priority
+
+Didactic note:
+- this example only reports catalog order. It does not claim that the first
+  matching catalog is always the best physical choice.
 """
 
 import os

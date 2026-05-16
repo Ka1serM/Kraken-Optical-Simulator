@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-STL prism with coating data.
+"""Example: STL prism with anti-reflection coating data.
 
-Loads a prism from STL geometry and applies coating-related non-sequential tracing settings.
+This example loads a packaged STL prism, assigns a simple coating table to one
+solid surface, and traces rays with the non-sequential loop.
 
-What to look at:
-- how the entrance pupil or ray bundle is calculated.
-- the difference between sequential Trace and non-sequential NsTrace.
-- the STL geometry file and its orientation in the optical path.
+What this example teaches:
+- how coating arrays are attached to a solid surface
+- how reflectivity, absorption, wavelength, and angle grids are represented
+- why coatings do not override total internal reflection
+- how to compare the coated STL setup in 2D and 3D
 
-Required local files:
-- prism.stl
+Required packaged file:
+- `KrakenOS/Examples/prism.stl`
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D view with arrows and a 3D view of the coated prism trace
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np
@@ -58,7 +63,7 @@ W = [0.35, 0.45, 0.55]
 THETA = [0, 45]
 # anti reflection coating
 Solid.Coating =[R, A, W, THETA]
-"""Note: this cannot change the total internal reflection """
+# Didactic note: coating data cannot override total internal reflection.
 
 
 P2 = Kos.surf()

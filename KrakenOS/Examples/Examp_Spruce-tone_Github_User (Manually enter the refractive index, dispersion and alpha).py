@@ -1,15 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-User material with manually entered dispersion.
+"""Example: manually enter refractive index, dispersion, and alpha.
 
-Defines a material directly from user-entered refractive-index and dispersion data.
+This example defines a material directly through the `Glass` attribute using
+the `nvk` string format, then traces a three-wavelength ray bundle through a
+doublet-like system.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how to enter a direct refractive index and Abbe number without a catalog
+- how the `nvk <index> <Abbe number> <alpha>` format is used
+- how `___BLANK` Zemax-style material strings can also be represented
+- how chromatic ray traces change when the material definition changes
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D plot of rays traced at three wavelengths
+
+Didactic note:
+- several alternative `L1c` definitions are intentionally left commented. They
+  document valid input formats for `surf.Glass`; use only one active definition
+  at a time.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

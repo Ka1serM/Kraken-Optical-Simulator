@@ -1,15 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Loading Zemax files and user catalogs.
+"""Example: load Zemax-style files and lens catalogs.
 
-Loads external Zemax-style and user catalog data before tracing a small optical system.
+This example loads packaged ZMF and ZMX files, converts catalog entries to
+KrakenOS surfaces, aligns several blocks, and traces a small lens relay.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how `zmf2dict` reads Zemax-style lens catalogs
+- how `zmx_read` loads a ZMX prescription
+- how `cat2surf`, `surflist2dict`, `SurfBlock`, and `alignment` connect catalog
+  data to KrakenOS surfaces
+- how to trace a 2D ray fan through the assembled system
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Required packaged files:
+- `KrakenOS/LensCat/Edmund Optics 2019.ZMF`
+- `KrakenOS/LensCat/THORLABS.ZMF`
+- `KrakenOS/LensCat/zmax_84383.zmx`
+
+Expected output:
+- printed catalog entries and first-order relay information
+- a 2D layout of the aligned catalog-based system
+
+Didactic note:
+- this file name preserves the original contributor-oriented example name.
+  Future documentation may rename it to a shorter catalog-loading example while
+  keeping this file as a compatibility alias.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np
@@ -38,11 +57,9 @@ for key in cat:
 
 print(8)
 
-'''
-convert catalog to surface lis7
-cat2surf convert the dictionary form of the surfaces to list of surf() class
-surflist2dict re-convert the list of surf() class to the catalog dictionary form
-'''
+# Convert catalog data to surface lists:
+# - cat2surf converts a catalog dictionary to a list of surf() objects.
+# - surflist2dict converts that list back to catalog-dictionary form.
 surf_list = Kos.cat2surf(cat['84383'], inverse=True, Thickness=0, DespY=5, TiltX=30, AxisMove=0)
 cat_dictionary = Kos.surflist2dict(surf_list)
 
@@ -85,9 +102,7 @@ sensor = 1.4
 print(f'source position {sensor/magnification/2:.3f} | source size {sensor/magnification:.3f} | sensor size {sensor} | magnification {magnification:.2f} |(mm)')
 wavelength = 0.55
 
-'''
-Alig
-'''
+# Align the surface blocks into one optical sequence.
 Distances = {0 : 33.72, 'asphere1' : 10.14282592, 'lens0' : 41.4911102, 'lens1' : 10.59216003, 'lens2' : 16.82, 'dichroic' : 18.13360847}
 align = Kos.system(Kos.alignment(lens_list, Distances), config)
 
@@ -101,4 +116,6 @@ fig = Kos.display2d(align, ray, figsize=(20, 8))
 xlim = [0, 180]
 ylim = [-15, 15]
 
+# Optional didactic display:
+# Uncomment if your environment needs an explicit Matplotlib show call.
 # plt.show()

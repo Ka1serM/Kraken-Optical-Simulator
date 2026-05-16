@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Transmission diffraction grating.
+"""Example: transmission diffraction grating.
 
-Traces a ray bundle through a transmissive grating and displays the resulting dispersed beam.
+This example places a transmissive grating before a lens group and traces a
+multi-wavelength ray bundle through the system.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the grating parameters and diffraction order.
+What this example teaches:
+- how to assign grating parameters to a transmissive surface
+- how the diffracted bundle propagates through later refractive surfaces
+- how wavelength affects the transmitted diffracted order
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of the transmitted dispersed beam
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

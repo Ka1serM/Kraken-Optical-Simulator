@@ -1,16 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Single-ray prism refraction.
+"""Example: single-ray prism refraction.
 
-Traces one ray through a prism so the refraction path can be inspected without a dense bundle.
+This example traces one ray through a two-face prism at three wavelengths and
+prints the deviation information used to estimate refractive index behavior.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the grating parameters and diffraction order.
+What this example teaches:
+- how to represent a prism with two tilted flat surfaces
+- how to compare incident and exiting ray direction cosines
+- how wavelength-dependent paraxial indices can be inspected
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- printed deviation and refractive-index information
+- a 2D view of the traced ray paths
+
+Didactic note:
+- the loop currently resets `ii = 12` on purpose, so the same incidence angle
+  is repeated. Remove that line if you want to scan angles from 0 to 39 deg.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np
@@ -65,6 +75,8 @@ Doblete = Kos.system(A, configuracion_1)
 for ii in range(0,40):
     Rayos = Kos.raykeeper(Doblete)
 
+    # Didactic fixed-angle setting:
+    # Remove this assignment to scan all loop angles from 0 to 39 deg.
     ii = 12
     tet = ii
     x_0 = 0

@@ -15,46 +15,44 @@ Carlos Guerrero P., Morgan Rhaí Najera Roa, Anais Sotelo B., Ilse Plauchu F., J
 
 ## 
 
-It would be appreciated if a reference to the following work, for which this package was originally build, is included whenever this code is used for a publication: (https://www.spiedigitallibrary.org/journals/optical-engineering/volume-61/issue-1/015101/KrakenOS-Python-based-general-exact-ray-tracing-library/10.1117/1.OE.61.1.015101.short)
+It would be appreciated if a reference to the following work, for which this package was originally built, is included whenever this code is used for a publication: (https://www.spiedigitallibrary.org/journals/optical-engineering/volume-61/issue-1/015101/KrakenOS-Python-based-general-exact-ray-tracing-library/10.1117/1.OE.61.1.015101.short)
 
 And the book "Optical Simulation Using Python and KrakenOS":
 (https://spie.org/Publications/Book/2672426#_=_)
 
 
 
-KrakenOS (Kraken - Optical Simulator) is a python library based in Numpy, Matplotlib, PyVTK and PyVista libraries, it provides a three-dimensional optical systems visualization and ray tracing. This tool has been programed on the object-oriented paradigm. KrakenOS focuses on performing sequential and non-sequential exact ray tracing, it permits to define all the parameters of the optical elements or even the mathematical function to describe their shape, it also allows adding optical properties to 3D solid elements in STL format and use glass catalogs. The library permit to control and modifying the position of the surfaces in a three-dimensional space, this allows generating off-axis systems. It also has several tools such as the calculation of wavefront aberrations in terms of Zernike polynomials, Seidel sums, Entrance and exit pupil calculation and paraxial optics.
+KrakenOS (Kraken - Optical Simulator) is a python library based in Numpy, Matplotlib, PyVTK and PyVista libraries, it provides a three-dimensional optical systems visualization and ray tracing. This tool has been programmed on the object-oriented paradigm. KrakenOS focuses on performing sequential and non-sequential exact ray tracing, it permits to define all the parameters of the optical elements or even the mathematical function to describe their shape, it also allows adding optical properties to 3D solid elements in STL format and use glass catalogs. The library permits controlling and modifying the position of the surfaces in a three-dimensional space, this allows generating off-axis systems. It also has several tools such as the calculation of wavefront aberrations in terms of Zernike polynomials, Seidel sums, Entrance and exit pupil calculation and paraxial optics.
 
-## install KrakenOS
-```python
-pip install KrakenOS
+## Install KrakenOS
+
+For regular use, install KrakenOS with pip:
+
+```bash
+python -m pip install KrakenOS
 ```
 
-## Prerequisites
-The library has been tested with the following packages and versions, these are also installed with the previous instruction.
+This installs KrakenOS and its Python dependencies, including NumPy, SciPy,
+Matplotlib, PyVista, VTK, PyVTK, csv342, and pandas.
 
-    • Python 3.13.1 
-    • numpy 2.2.2 
-    • scipy 1.15.1 
-    • pyvista 0.44.1 
-    • matplotlib 3.10.0 
-    • vtk 9.4.1 
-    • pandas 2.2.3 
+For development from a cloned repository, run this command from the repository
+root, where `pyproject.toml` is located:
 
-to install prerequisites
-
-```python
-pip install pyvista
-pip install PyVTK
-pip install vtk
-pip install numpy
-pip install scipy
-pip install matplotlib
-pip install csv342
-pip install pandas
+```bash
+python -m pip install -e .
 ```
 
-• Or clone the repository and place the directory “KrakenOS” in the same path where the code to be executed is located.    
+To verify the installation:
 
+```python
+import KrakenOS as Kos
+
+print(Kos.__file__)
+print(Kos.surf())
+```
+
+For a broader map of the library, see
+[KrakenOS Capabilities](docs/capabilities.md).
 
 ### A little fun before class ... and objects
 
@@ -113,14 +111,14 @@ P_Ima.Name = "P_Ima"
 P_Ima.Nm_Pos=(-10,10)
 ```
 
-Creating a list with all the surfaces and loading the default grass catalogs (See user manual)
+Creating a list with all the surfaces and loading the default glass catalogs (See user manual)
 ```python
 A = [P_Obj, L1a, L1b, L1c, pupila, P_Ima]
 config_1 = Kos.Setup()
 ```
 
 ```python
-# Creating the system with previus information
+# Creating the system with previous information
 Doublet = Kos.system(A, config_1)
 ```
 
@@ -186,11 +184,11 @@ Kos.display2d(Doublet, Rays,0,1)
 
 
 
-## surf class Atributes
-| class Atribute                       | Short description                                                                                                 |
+## surf class Attributes
+| class Attribute                       | Short description                                                                                                 |
 | -------------------------------------| ----------------------------------------------------------------------------------------------------------------- |
 | surf.Name = ""                       | Name of the element.                                                                                              |
-| surf.Nm_Pos = (0,0)                 | “Name” position in the 2D diagram.                                                                                |
+| surf.Nm_Pos = (0,0)                 | "Name" position in the 2D diagram.                                                                                |
 | surf.Note = "None"                   | Useful for adding user notes to a surface.                                                                        |
 | surf.Rc = 0                          | Paraxial radius of curvature in millimeters.                                                                      |
 | surf.Cylinder\_Rxy\_Ratio = 1        | Ratio between the axial and sagittal radius of curvature.                                                         |
@@ -228,78 +226,113 @@ Kos.display2d(Doublet, Rays,0,1)
 
 
 
-## system class atributes and methods
-| class Atribute                       | Short description                                                                                                 |
-| -------------------------------------| ----------------------------------------------------------------------------------------------------------------- |
-| system.Trace (pS, dC, wV)                                                             | Sequential ray tracing.                                                                                                                               
-|                                                                                       | pS = \[1.0, 0.0, 0.0\] – Ray origin coordinates                                                                                                     
-|                                                                                       | dC = \[0.0,0.0,1.0\] - The directing cosines                                                                                                        
-|                                                                                       | wV = 0.4 - Wavelength 
-|                                                                                                                                                          |
-| system.NsTrace (pS, dC, wV)                                                           | Non-Sequential ray tracing                                                                                                                          
-| Prx = system.Parax (w)                                                                | Paraxial optics calculations                                                                                                                        
-| system.disable\_inner                                                                 | Enables the central aperture.                                                                                                                       | system.enable\_inner                                                                  | Disables the central aperture.                                                                                                                     | system.SURFACE                                                                        | Returns the surfaces the ray passed through.                                                                                                        | system.NAME                                                                           | Returns surface names that the ray passed through                                                                                                   | system.GLASS                                                                          | Returns materials that the ray passed through.                                                                                                      | system.XYZ                                                                            | \[X, Y, Z\] ray coordinates from its origin to the image plane.                                                                                     | system.OST\_XYZ                                                                       | \[X, Y, Z\] coordinates of ray intersections with respect to a coordinate system at its vertex, even if this vertex has a translation or rotation. |
-| system.DISTANCE                                                                       | List of distances traveled by the ray.                                                                                                              | system.OP                                                                             | List of optical paths.                                                                                                                              | system.TOP                                                                            | Total optical path.                                                                                                                                 | system.TOP\_S                                                                         | List of the ray's optical path by sections.                                                                                                        |
-| system.ALPHA                                                                          | List the materials absorption coefficients                                                                                                          |
-| system.BULK\_TRANS                                                                    | List the transmission through all the system. absorption coefficients are considered.                                                               |
-| system.S\_LMN                                                                         | Surface normal direction cosines \[L, M, N\].                                                                                                       |
-| system.LMN                                                                            | Incident ray direction cosines \[L, M, N\].                                                                                                         |
-| system.R\_LMN                                                                         | Resulting ray direction cosines \[L, M, N\].                                                                                                        |
-| system.N0                                                                             | Refractive indices before and after each interface                                                                                                  |
-| system.N1                                                                             | Refractive indices after each interface. This is useful to differentiate between index before and after an iteration. Example:                                                                                                            |
-|                                                                                       | N0 = \[n1, n2, n3, n4, n5\] and N1 = \[n2, n3, n4, n5, n5\]                                                                                                                                   
-| system.WAV                                                                            | Wavelength of the ray (µm)                                                                                                                          |
-| system.G\_LMN                                                                         | \[L, M, N\] Direction cosines that define the lines of the diffraction grating on the plane.                                                        |
-| system.ORDER                                                                          | Ray diffraction order.                                                                                                                              |
-| system.GRATING\_D                                                                     | Distance between lines of the diffraction grating.Units (µm)                                                                                        |
-| system.RP                                                                             | Fresnel reflection coefficients for polarization P.                                                                                                 |
-| system.RS                                                                             | Fresnel reflection coefficients for polarization S.                                                                                                 |
-| system.TP                                                                             | Fresnel transmission coefficients for polarization P.                                                                                               |
-| system.TS                                                                             | Fresnel transmission coefficients for polarization S.                                                                                               |
-| system.TTBE                                                                           | Total energy transmitted or reflected by element.                                                                                                  |
-| system.TT                                                                             | Total energy transmitted or reflected total.                                                                                                        |
-| system.targ\_surf (int)                                                               | Limits the ray tracing to the defined surface                                                                                                       |
-| system.flat\_surf (int)                                                               | Change a surface to flat.                                                                                                                           |
+## system class attributes and methods
+
+| Attribute or method | Short description |
+| --- | --- |
+| `system.Trace(pS, dC, wV)` | Sequential ray tracing. `pS` is the ray origin `[x, y, z]`, `dC` is the direction cosine vector `[L, M, N]`, and `wV` is the wavelength in micrometers. |
+| `system.NsTrace(pS, dC, wV)` | Non-sequential ray tracing. |
+| `system.Parax(w)` | Paraxial optics calculations. |
+| `system.disable_inner` | Enables the central aperture. |
+| `system.enable_inner` | Disables the central aperture. |
+| `system.SURFACE` | Surfaces the ray passed through. |
+| `system.NAME` | Surface names the ray passed through. |
+| `system.GLASS` | Materials the ray passed through. |
+| `system.XYZ` | Ray coordinates from origin to image plane. |
+| `system.OST_XYZ` | Ray intersection coordinates in the local surface coordinate system. |
+| `system.DISTANCE` | Distances traveled by the ray. |
+| `system.OP` | Optical path list. |
+| `system.TOP` | Total optical path. |
+| `system.TOP_S` | Optical path by sections. |
+| `system.ALPHA` | Material absorption coefficients. |
+| `system.BULK_TRANS` | Bulk transmission through the system. |
+| `system.S_LMN` | Surface normal direction cosines `[L, M, N]`. |
+| `system.LMN` | Incident ray direction cosines `[L, M, N]`. |
+| `system.R_LMN` | Resulting ray direction cosines `[L, M, N]`. |
+| `system.N0` | Refractive indices before each interface. |
+| `system.N1` | Refractive indices after each interface. |
+| `system.WAV` | Ray wavelength in micrometers. |
+| `system.G_LMN` | Direction cosines defining diffraction grating lines on the surface. |
+| `system.ORDER` | Ray diffraction order. |
+| `system.GRATING_D` | Diffraction grating line spacing in micrometers. |
+| `system.RP` | Fresnel reflection coefficient for P polarization. |
+| `system.RS` | Fresnel reflection coefficient for S polarization. |
+| `system.TP` | Fresnel transmission coefficient for P polarization. |
+| `system.TS` | Fresnel transmission coefficient for S polarization. |
+| `system.TTBE` | Total energy transmitted or reflected by element. |
+| `system.TT` | Total transmitted or reflected energy. |
+| `system.targ_surf(int)` | Limits ray tracing to the selected surface. |
+| `system.flat_surf(int)` | Changes a surface to flat. |
 
 
 
-## User manual and examples
-Very important, read the included user manual (KrakenOS_User_Manual.pdf) and the set of useful examples:
+## User Manual and Examples
 
-• Examp_Axicon.py          
-• Examp_Axicon_And_Cylinder.py          
-• Examp_Diffraction_Grating_Reflection.py          
-• Examp_Diffraction_Grating_Transmission.py          
-• Examp_Doublet_Lens_ParaxMatrix.py          
-• Examp_Doublet_Lens.py          
-• Examp_Doublet_Lens_3Dcolor.py          
-• Examp_Doublet_Lens_CommandsSystem.py          
-• Examp_Doublet_Lens_Cylinder.py          
-• Examp_Doublet_Lens_NonSec.py          
-• Examp_Doublet_Lens_Pupil.py          
-• Examp_Doublet_Lens_Pupil_Seidel.py          
-• Examp_Doublet_Lens_Tilt_Nulls.py          
-• Examp_Doublet_Lens_Tilt.py          
-• Examp_Doublet_Lens_Tilt_non_sec.py          
-• Examp_Doublet_Lens_Zernike.py          
-• Examp_ExtraShape_Micro_Lens_Array.py          
-• Examp_ExtraShape_Radial_Sine.py          
-• Examp_ExtraShape_XY_Cosines.py          
-• Examp_Flat_Mirror_45Deg.py          
-• Examp_MultiCore.py          
-• Examp_ParaboleMirror_Shift.py          
-• Examp_Perfect_lens.py          
-• Examp_Ray.py          
-• Examp_Solid_Object_STL.py          
-• Examp_Solid_Object_STL_ARRAY.py          
-• Examp_Sourse_Distribution_Function.py          
-• Examp_Tel_2M.py          
-• Examp_Tel_2M_Error_Map.py          
-• Examp_Tel_2M_Pupila.py          
-• Examp_Tel_2M_Spyder_Spot_Diagram.py          
-• Examp_Tel_2M_Spyder_Spot_RMS.py          
-• Examp_Tel_2M_Spyder_Spot_Tilt_M2.py          
-• Examp_Tel_2M_Atmospheric_Refraction.py          
-• Examp_Tel_2M_Wavefront_Fitting.py          
+The included user manual is [MU-2022-01.pdf](KrakenOS/Docs/MU-2022-01.pdf).
 
-Enjoy it!!
+Example scripts are available in `KrakenOS/Examples`:
+
+- `Examp_Axicon.py`
+- `Examp_Axicon_And_Cylinder.py`
+- `Examp_CzernyTurner.py`
+- `Examp_Diffraction_Grating_Reflection.py`
+- `Examp_Diffraction_Grating_Reflection_Single.py`
+- `Examp_Diffraction_Grating_Transmission.py`
+- `Examp_Dispersion_By_AbbeNumber.py`
+- `Examp_Doublet_Lens.py`
+- `Examp_Doublet_Lens_3Dcolor.py`
+- `Examp_Doublet_Lens_CommandsSystem.py`
+- `Examp_Doublet_Lens_Cylinder.py`
+- `Examp_Doublet_Lens_NonSec.py`
+- `Examp_Doublet_Lens_NonSec-AR_Coating.py`
+- `Examp_Doublet_Lens_Pupil.py`
+- `Examp_Doublet_Lens_Pupil_Seidel.py`
+- `Examp_Doublet_Lens_Tilt.py`
+- `Examp_Doublet_Lens_Tilt_non_sec.py`
+- `Examp_Doublet_Lens_Tilt_non_sec-AR-Coating.py`
+- `Examp_Doublet_Lens_Tilt-Nulls.py`
+- `Examp_Doublet_Lens_Zernike.py`
+- `Examp_Doublet_Lens-ParaxMatrix.py`
+- `Examp_Doublet_Optimization.py`
+- `Examp_ExtraShape_Micro_Lens_Array.py`
+- `Examp_ExtraShape_Radial_Sine.py`
+- `Examp_ExtraShape_UserFacets.py`
+- `Examp_ExtraShape_XY_Cosines.py`
+- `Examp_ExtraShape_XY_Cosines_UDA.py`
+- `Examp_Flat_Mirror_45Deg.py`
+- `Examp_Flat_NonSec_AR-caoating.py`
+- `Examp_Fresnel.py`
+- `Examp_Glass_Catalog_Order.py`
+- `Examp_ParaboleMirror_Shift.py`
+- `Examp_ParaboleMirror_Shift_UDA.py`
+- `Examp_Perfect_lens.py`
+- `Examp_Perfect_lens_Telescope.py`
+- `Examp_Pickle_Doublet_Lens_3Dcolor.py`
+- `Examp_Prism_STL.py`
+- `Examp_Prism_STL-AR_coating.py`
+- `Examp_Ray.py`
+- `Examp_Refraction_Prism.py`
+- `Examp_Refraction_Prism_OneRay.py`
+- `Examp_Refraction_Prism_solid.py`
+- `Examp_Refraction_Prism_solid_Generation.py`
+- `Examp_RonchiTest.py`
+- `Examp_Solid_Object_STL.py`
+- `Examp_Solid_Object_STL_ARRAY.py`
+- `Examp_Source_Distribution_Function.py`
+- `Examp_Sphere.py`
+- `Examp_Spruce-tone_Github_User (Manually enter the refractive index, dispersion and alpha).py`
+- `Examp_Spruce-tone_Github_User(Loading_Zemax_and_Catalogs).py`
+- `Examp_Tel_2M.py`
+- `Examp_Tel_2M_Atmospheric_Refraction_Corrector_Adaptable.py`
+- `Examp_Tel_2M_Atmospheric_Refraction_Corrector_Static.py`
+- `Examp_Tel_2M_Cuña.py`
+- `Examp_Tel_2M_Echelle.py`
+- `Examp_Tel_2M_Optimization_Variables.py`
+- `Examp_Tel_2M_Pupila.py`
+- `Examp_Tel_2M_Spyder_Spot_Diagram.py`
+- `Examp_Tel_2M_Spyder_Spot_RMS.py`
+- `Examp_Tel_2M_Wavefront_Fitting.py`
+- `Examp_Tel_2M_Wavefront_Fitting_optimization.py`
+- `Examp_Tel_2M-STL_ImageSlicer.py`
+
+Enjoy it!

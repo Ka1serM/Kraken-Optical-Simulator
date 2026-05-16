@@ -22,7 +22,27 @@ And the book "Optical Simulation Using Python and KrakenOS":
 
 
 
-KrakenOS (Kraken - Optical Simulator) is a python library based in Numpy, Matplotlib, PyVTK and PyVista libraries, it provides a three-dimensional optical systems visualization and ray tracing. This tool has been programmed on the object-oriented paradigm. KrakenOS focuses on performing sequential and non-sequential exact ray tracing, it permits to define all the parameters of the optical elements or even the mathematical function to describe their shape, it also allows adding optical properties to 3D solid elements in STL format and use glass catalogs. The library permits controlling and modifying the position of the surfaces in a three-dimensional space, this allows generating off-axis systems. It also has several tools such as the calculation of wavefront aberrations in terms of Zernike polynomials, Seidel sums, Entrance and exit pupil calculation and paraxial optics.
+KrakenOS (Kraken - Optical Simulator) is a Python library based on NumPy,
+Matplotlib, PyVTK, and PyVista. It provides exact ray tracing and 2D/3D
+visualization for optical systems. KrakenOS supports sequential and
+non-sequential tracing, optical surfaces defined by parameters or mathematical
+functions, STL solid objects with optical properties, glass and lens catalogs,
+off-axis systems, wavefront analysis with Zernike polynomials, Seidel sums,
+entrance and exit pupil calculations, paraxial optics, and practical
+instrument-level examples.
+
+## Documentation map
+
+- [Capabilities overview](docs/capabilities.md): what KrakenOS can model and
+  where to find representative examples.
+- [Example guide](docs/examples.md): task-oriented entry points for users who
+  want to start from a script.
+- [Generated examples manual](docs/examples_manual.md): topic-by-topic manual
+  generated from the example docstrings, with reproducible 2D and 3D images.
+- [Example coverage roadmap](docs/example_coverage.md): what is well covered,
+  what is partly covered, and what should be improved next.
+- [PSF and MTF notes](docs/psf_mtf_notes.md): practical notes for the compact
+  PSF/MTF helper functions.
 
 ## Install KrakenOS
 

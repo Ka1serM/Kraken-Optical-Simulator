@@ -8,6 +8,9 @@ The examples are intentionally written as scripts rather than as polished API
 recipes.  That makes them useful for learning by editing: change one radius,
 wavelength, aperture, tilt, or grating order and run the file again.
 
+For a generated manual with topic summaries and selected 2D/3D figures, see
+`../../docs/examples_manual.md`.
+
 ## How to use these examples
 
 Run an example from this directory, or from a project directory where KrakenOS is
@@ -21,6 +24,12 @@ python Examples/Examp_Ray.py
 A few advanced examples need local data files such as STL geometry, sampled
 surface profiles, saved rays, or spectral-line tables.  Those files are included
 in this folder when they are required by the original scripts.
+
+To regenerate the visual manual assets from the repository root:
+
+```bash
+python tools/generate_example_images.py --all
+```
 
 ## Reading order
 

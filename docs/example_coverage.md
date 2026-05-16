@@ -82,6 +82,28 @@ without starting from the larger instrument-level scripts:
    Purpose: document the practical inputs and current sampling behavior of the
    PSF/MTF helper functions.
 
+## Generated Visual Manual
+
+The generated examples manual now includes reproducible images for selected
+first-contact examples. These images are created by
+`tools/generate_example_images.py` and inserted by
+`tools/generate_examples_manual.py`.
+
+Currently illustrated areas include:
+
+- basic ray tracing
+- glass catalog priority
+- coating and metal energy terms
+- ideal lenses and an ideal telescope
+- lens catalog conversion and `SurfBlock` assemblies
+- chromatic dispersion
+- prism refraction
+- folded mirror geometry
+- PSF/MTF from Zernike terms
+- pupil tracing in 2D and 3D
+- reverse tracing
+- RMS best-focus analysis
+
 ## Documentation Improvements Before Adding Many Examples
 
 - Keep current historical example filenames stable for compatibility.
@@ -96,9 +118,12 @@ without starting from the larger instrument-level scripts:
 
 The next practical batch should investigate or design:
 
-1. Review whether `FastTrace` should have a public beginner example
-2. Add a glass catalog manager API or GUI in a future version
-3. Add deeper off-axis reverse-trace and metal-coating tutorials only if users ask for them
+1. Add generated figures for STL/solid-object examples.
+2. Add generated figures for diffraction grating examples.
+3. Add generated figures for atmospheric refraction and telescope-level examples.
+4. Review whether `FastTrace` should have a public beginner example.
+5. Add a glass catalog manager API or GUI in a future version.
+6. Add deeper off-axis reverse-trace and metal-coating tutorials only if users ask for them.
 
 Then update:
 

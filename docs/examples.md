@@ -2,7 +2,10 @@
 
 Use this guide to find a starting example depending on what you want to do.
 For a generated topic-by-topic manual, see
-[KrakenOS Examples Manual](examples_manual.md).
+[KrakenOS Examples Manual](examples_manual.md). That manual includes generated
+2D and 3D images for selected examples. To refresh those images and rebuild the
+manual, run `python tools/generate_example_images.py --all` from the repository
+root.
 
 | I want to... | Start with this example |
 | --- | --- |

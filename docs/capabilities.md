@@ -7,9 +7,10 @@ and practical system examples.
 
 This document is an overview of the main capabilities currently represented in
 the codebase and examples. For a task-oriented list of scripts, see the
-[KrakenOS Example Guide](examples.md). For future example priorities, see the
-[Example Coverage Roadmap](example_coverage.md). For a short note on PSF/MTF
-helper usage, see [PSF and MTF Notes](psf_mtf_notes.md).
+[KrakenOS Example Guide](examples.md). For a generated visual manual, see the
+[KrakenOS Examples Manual](examples_manual.md). For future example priorities,
+see the [Example Coverage Roadmap](example_coverage.md). For a short note on
+PSF/MTF helper usage, see [PSF and MTF Notes](psf_mtf_notes.md).
 
 ## Core Ray Tracing
 
@@ -267,5 +268,5 @@ Useful future documentation additions:
 - a glass catalog management guide
 - a packaging and installation guide for contributors
 - short tutorials that reproduce selected examples step by step
-- focused examples for RMS/best focus, PSF/MTF, coating energy, lens catalogs,
-  and reverse tracing
+- more generated figures for STL/solid geometry, diffraction, atmospheric
+  optics, optimization, and telescope-level workflows

@@ -6,11 +6,12 @@ toolbox for optical design, visualization, catalog handling, wavefront analysis,
 and practical system examples.
 
 This document is an overview of the main capabilities currently represented in
-the codebase and examples. For a task-oriented list of scripts, see the
-[KrakenOS Example Guide](examples.md). For a generated visual manual, see the
-[KrakenOS Examples Manual](examples_manual.md). For future example priorities,
-see the [Example Coverage Roadmap](example_coverage.md). For a short note on
-PSF/MTF helper usage, see [PSF and MTF Notes](psf_mtf_notes.md).
+the codebase and examples. For a modern task-oriented user manual, see the
+[KrakenOS User Manual](user_manual/README.md). For a task-oriented list of
+scripts, see the [KrakenOS Example Guide](examples.md). For a generated visual
+manual, see the [KrakenOS Examples Manual](examples_manual.md). For future
+example priorities, see the [Example Coverage Roadmap](example_coverage.md).
+For a short note on PSF/MTF helper usage, see [PSF and MTF Notes](psf_mtf_notes.md).
 
 ## Core Ray Tracing
 
@@ -263,8 +264,6 @@ Relevant examples:
 Useful future documentation additions:
 
 - a feature-to-example table
-- a concise API overview for `surf`, `system`, `raykeeper`, `Setup`, and
-  `PupilCalc`
 - a glass catalog management guide
 - a packaging and installation guide for contributors
 - short tutorials that reproduce selected examples step by step

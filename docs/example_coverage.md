@@ -4,6 +4,10 @@ This roadmap compares the current KrakenOS capabilities with the example set.
 It is meant to guide future example work without changing the historical
 example filenames.
 
+The modern user-facing documentation starts at
+[`docs/user_manual/README.md`](user_manual/README.md). The generated visual
+examples manual remains in [`docs/examples_manual.md`](examples_manual.md).
+
 ## Well Covered
 
 These areas already have useful examples and mostly need small maintenance over

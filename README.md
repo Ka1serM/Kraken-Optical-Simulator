@@ -33,12 +33,17 @@ instrument-level examples.
 
 ## Documentation map
 
+- [Documentation index](docs/README.md): the recommended reading path and the
+  role of each documentation file.
+- [User manual](docs/user_manual/README.md): the primary modern guide for
+  installation, surfaces, tracing, visualization, pupils, analysis, and
+  advanced workflows.
 - [Capabilities overview](docs/capabilities.md): what KrakenOS can model and
   where to find representative examples.
 - [Example guide](docs/examples.md): task-oriented entry points for users who
   want to start from a script.
-- [Generated examples manual](docs/examples_manual.md): topic-by-topic manual
-  generated from the example docstrings, with reproducible 2D and 3D images.
+- [Generated examples manual](docs/examples_manual.md): generated visual
+  appendix built from example docstrings, with reproducible 2D and 3D images.
 - [Example coverage roadmap](docs/example_coverage.md): what is well covered,
   what is partly covered, and what should be improved next.
 - [PSF and MTF notes](docs/psf_mtf_notes.md): practical notes for the compact

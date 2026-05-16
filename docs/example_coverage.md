@@ -29,13 +29,13 @@ large, or not ideal as first-contact tutorials:
 | Area | Current state | Suggested improvement |
 | --- | --- | --- |
 | Coating tables and energy behavior | `Examp_Coating_Energy_Basics.py` now shows a small coating-only tutorial with reflected and transmitted energy terms. | Larger non-sequential coating examples remain useful for advanced workflows. |
-| Metal coatings and polarization terms | `Examp_Sphere.py` loads `Gold.csv` and prints S/P reflection values. | Add a clearer metal-mirror example that compares dielectric mirror behavior with metal data. |
+| Metal coatings and polarization terms | `Examp_Metal_Mirror_Energy.py` compares aluminum and gold mirror energy terms. | Keep `Examp_Sphere.py` as a geometry-oriented metal mirror example. |
 | PSF and MTF | `Examp_PSF_MTF_From_Zernike.py` now shows direct PSF and MTF calculation from Zernike coefficients. | Add a deeper note later about PSF/MTF sampling and units. |
 | RMS and best-focus tools | `Examp_RMS_BestFocus.py` now shows `Kos.RMS` and RMS minimization in a compact example. | Consider adding a deeper API note if `Kos.BestFocus` is revised in the future. |
-| Zemax lens catalog conversion | Covered by the Spruce-tone user example. | Add a shorter lens-catalog example using one packaged ZMF entry and showing the converted surfaces. |
-| Reverse tracing | `system.RvTrace` exists, but there is no obvious beginner example. | Add a minimal reverse-trace example from image plane back toward the object space. |
+| Zemax lens catalog conversion | `Examp_Lens_Catalog_Basics.py` now shows a short packaged ZMF entry conversion. | The larger Spruce-tone example remains useful for advanced catalog workflows. |
+| Reverse tracing | `Examp_Reverse_Trace.py` now shows a minimal image-to-object reverse trace. | Add a more advanced off-axis reverse-trace example only if needed. |
 | Fast tracing | `FastTrace` exists in the system class, but is not presented as a workflow. | Add a performance-oriented example only after confirming the intended public API. |
-| `SurfBlock` reusable assemblies | `SurfBlockClass.py` exposes reusable lens blocks. | Add a small example that builds, aligns, and reuses a lens block. |
+| `SurfBlock` reusable assemblies | `Examp_SurfBlock_Basics.py` now shows catalog entries used as reusable blocks. | Larger relay examples can build on this pattern. |
 
 ## Missing First-Contact Examples
 
@@ -57,12 +57,12 @@ tasks in a focused way:
    Purpose: show the coating table format, trace one or a few rays, and inspect
    the resulting reflected/transmitted energy terms.
 
-4. `Examp_Lens_Catalog_Basics.py`
+4. `Examp_Lens_Catalog_Basics.py` - added
 
    Purpose: load a packaged Zemax-style catalog file, list a few available lens
    entries, convert one entry to KrakenOS surfaces, and display the result.
 
-5. `Examp_Reverse_Trace.py`
+5. `Examp_Reverse_Trace.py` - added
 
    Purpose: demonstrate `RvTrace` in a tiny system so users understand when
    reverse tracing is useful.
@@ -81,9 +81,9 @@ tasks in a focused way:
 
 The next practical batch should add:
 
-1. `Examp_Lens_Catalog_Basics.py`
-2. `Examp_Reverse_Trace.py`
-3. A deeper API note for PSF/MTF sampling and units
+1. Review whether `FastTrace` should have a public beginner example
+2. Add a glass catalog manager API or GUI in a future version
+3. Add deeper off-axis reverse-trace and metal-coating tutorials only if users ask for them
 
 Then update:
 

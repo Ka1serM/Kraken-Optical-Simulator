@@ -34,6 +34,8 @@
 | `Examp_Flat_NonSec_AR-caoating.py` | Advanced | Coating and non-sequential tracing | Historical flat coated non-sequential example. | - |
 | `Examp_Fresnel.py` | Advanced | Custom surface profile | Fresnel lens from a sampled radial profile. | R1064_F1800.txt |
 | `Examp_Glass_Catalog_Order.py` | Beginner | Catalog configuration | Glass catalog loading order. | - |
+| `Examp_Lens_Catalog_Basics.py` | Beginner | Lens catalogs | Basic Zemax-style lens catalog loading. | THORLABS.ZMF |
+| `Examp_Metal_Mirror_Energy.py` | Beginner | Metal coatings | Metal mirror reflection and transmission terms. | Gold.csv |
 | `Examp_ParaboleMirror_Shift.py` | Intermediate | Mirror tracing | Shifted parabolic mirror. | - |
 | `Examp_ParaboleMirror_Shift_UDA.py` | Advanced | Mirror tracing | Shifted parabolic mirror with user-defined aperture. | - |
 | `Examp_Perfect_lens.py` | Beginner | Idealized lens | Ideal thin-lens element. | - |
@@ -47,12 +49,14 @@
 | `Examp_Refraction_Prism_OneRay.py` | Beginner | Prism refraction | Single-ray prism refraction. | - |
 | `Examp_Refraction_Prism_solid.py` | Advanced | Solid geometry | Solid prism refraction. | - |
 | `Examp_Refraction_Prism_solid_Generation.py` | Advanced | Solid geometry | Generated solid prism refraction. | - |
+| `Examp_Reverse_Trace.py` | Beginner | Reverse tracing | Reverse tracing through a simple doublet. | - |
 | `Examp_RonchiTest.py` | Intermediate | Optical testing | Ronchi test with PyVista mask planes. | - |
 | `Examp_RMS_BestFocus.py` | Beginner | Spot analysis | RMS spot radius and best-focus shift. | - |
 | `Examp_Solid_Object_STL.py` | Advanced | STL geometry | Single STL solid object. | Prisma.stl |
 | `Examp_Solid_Object_STL_ARRAY.py` | Advanced | STL geometry | Array of STL solid objects. | - |
 | `Examp_Source_Distribution_Function.py` | Intermediate | Ray source sampling | Custom source distribution functions. | - |
 | `Examp_Sphere.py` | Beginner | Basic surface tracing | Spherical mirror with metal coating data. | - |
+| `Examp_SurfBlock_Basics.py` | Intermediate | Lens catalogs | Reusable catalog lens assemblies with SurfBlock. | THORLABS.ZMF |
 | `Examp_Spruce-tone_Github_User (Manually enter the refractive index, dispersion and alpha).py` | Advanced | User material model | User material with manually entered dispersion. | - |
 | `Examp_Spruce-tone_Github_User(Loading_Zemax_and_Catalogs).py` | Advanced | External catalogs | Loading Zemax files and user catalogs. | - |
 | `Examp_Tel_2M-STL_ImageSlicer.py` | Advanced | Telescope and STL geometry | 2 m telescope with an STL image slicer. | savedRays.npy, Jherrera-ImageSlicerBW-00.stl |

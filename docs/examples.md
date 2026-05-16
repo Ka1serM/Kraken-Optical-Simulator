@@ -5,6 +5,7 @@ Use this guide to find a starting example depending on what you want to do.
 | I want to... | Start with this example |
 | --- | --- |
 | Trace a single ray | [`Examp_Ray.py`](../KrakenOS/Examples/Examp_Ray.py) |
+| Trace backward from image space | [`Examp_Reverse_Trace.py`](../KrakenOS/Examples/Examp_Reverse_Trace.py) |
 | Build a simple doublet lens | [`Examp_Doublet_Lens.py`](../KrakenOS/Examples/Examp_Doublet_Lens.py) |
 | Plot a lens in 2D or 3D | [`Examp_Doublet_Lens_3Dcolor.py`](../KrakenOS/Examples/Examp_Doublet_Lens_3Dcolor.py) |
 | Save and reload a traced system | [`Examp_Pickle_Doublet_Lens_3Dcolor.py`](../KrakenOS/Examples/Examp_Pickle_Doublet_Lens_3Dcolor.py) |
@@ -24,11 +25,14 @@ Use this guide to find a starting example depending on what you want to do.
 | Trace non-sequential rays | [`Examp_Doublet_Lens_NonSec.py`](../KrakenOS/Examples/Examp_Doublet_Lens_NonSec.py) |
 | Add anti-reflection coatings | [`Examp_Doublet_Lens_NonSec-AR_Coating.py`](../KrakenOS/Examples/Examp_Doublet_Lens_NonSec-AR_Coating.py) |
 | Inspect coating energy terms | [`Examp_Coating_Energy_Basics.py`](../KrakenOS/Examples/Examp_Coating_Energy_Basics.py) |
+| Compare metal mirror energy terms | [`Examp_Metal_Mirror_Energy.py`](../KrakenOS/Examples/Examp_Metal_Mirror_Energy.py) |
 | Use diffraction gratings | [`Examp_Diffraction_Grating_Reflection.py`](../KrakenOS/Examples/Examp_Diffraction_Grating_Reflection.py) |
 | Use a transmission grating | [`Examp_Diffraction_Grating_Transmission.py`](../KrakenOS/Examples/Examp_Diffraction_Grating_Transmission.py) |
 | Study dispersion with Abbe number | [`Examp_Dispersion_By_AbbeNumber.py`](../KrakenOS/Examples/Examp_Dispersion_By_AbbeNumber.py) |
 | Inspect glass catalog priority | [`Examp_Glass_Catalog_Order.py`](../KrakenOS/Examples/Examp_Glass_Catalog_Order.py) |
 | Load Zemax and catalog data | [`Examp_Spruce-tone_Github_User(Loading_Zemax_and_Catalogs).py`](../KrakenOS/Examples/Examp_Spruce-tone_Github_User%28Loading_Zemax_and_Catalogs%29.py) |
+| Start with a lens catalog entry | [`Examp_Lens_Catalog_Basics.py`](../KrakenOS/Examples/Examp_Lens_Catalog_Basics.py) |
+| Reuse catalog lenses as blocks | [`Examp_SurfBlock_Basics.py`](../KrakenOS/Examples/Examp_SurfBlock_Basics.py) |
 | Enter refractive index data manually | [`Examp_Spruce-tone_Github_User (Manually enter the refractive index, dispersion and alpha).py`](../KrakenOS/Examples/Examp_Spruce-tone_Github_User%20%28Manually%20enter%20the%20refractive%20index%2C%20dispersion%20and%20alpha%29.py) |
 | Use STL optical solids | [`Examp_Solid_Object_STL.py`](../KrakenOS/Examples/Examp_Solid_Object_STL.py) |
 | Trace through a prism STL | [`Examp_Prism_STL.py`](../KrakenOS/Examples/Examp_Prism_STL.py) |

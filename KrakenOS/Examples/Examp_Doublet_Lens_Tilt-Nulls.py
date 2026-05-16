@@ -3,10 +3,17 @@
 """
 Tilted doublet built with deferred system construction.
 
-Defines a tilted doublet and delays the system build so null or pickled configurations can be tested.
+This example shows how NULL surfaces can compensate coordinate changes around a
+tilted element. The system is created with `build=0`, then built explicitly
+after optional serialization experiments.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+Key ideas:
+- using NULL surfaces to control coordinate breaks around a tilted lens
+- delaying system construction with `build=0`
+- tracing several wavelengths through the same tilted system
+
+The pickle block is intentionally commented. It is a didactic checkpoint for
+users who want to test saving and reloading a not-yet-built system.
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -81,13 +88,13 @@ configuracion_1 = Kos.Setup()
 Doblete = Kos.system(A, configuracion_1, build = 0)
 
 
-# with open('mi_objeto.pkl', 'wb') as archivo_salida:
-#     # Usa pickle.dump para serializar y guardar el objeto en el archivo.
-#     pickle.dump(Doblete, archivo_salida)
+# Optional didactic serialization experiment:
+# with open('doublet_with_nulls.pkl', 'wb') as output_file:
+#     pickle.dump(Doblete, output_file)
 
 
-# with open('mi_objeto.pkl', 'rb') as archivo_entrada:
-#     Doblete = pickle.load(archivo_entrada)
+# with open('doublet_with_nulls.pkl', 'rb') as input_file:
+#     Doblete = pickle.load(input_file)
 
 
 Doblete.build()

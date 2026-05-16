@@ -3,10 +3,14 @@
 """
 Flat non-sequential coated surface.
 
-Uses a flat optical element with coating settings in non-sequential tracing.
+This example uses non-sequential tracing with coating tables on a compact
+doublet-like geometry. The file name keeps its historical spelling so existing
+links do not break.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
+Key ideas:
+- assigning coating tables with `[R, A, W, THETA]`
+- enabling probabilistic surface behavior with `energy_probability`
+- tracing repeated non-sequential paths for a small ray fan
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -51,14 +55,14 @@ W = [0.35, 0.45, 0.55]
 
 THETA = [0, 45]
 
-L1a.Coating =[R, A, W, THETA]
+L1a.Coating = [R, A, W, THETA]
 
 L1b = Kos.surf()
 L1b.Rc = -3.071608670000159E+001
 L1b.Thickness = 3.0
 L1b.Glass = "F2"
 L1b.Diameter = 30
-L1b.Coating =[R, A, W, THETA]
+L1b.Coating = [R, A, W, THETA]
 
 
 L1c = Kos.surf()
@@ -66,7 +70,7 @@ L1c.Rc = -7.819730726078505E+001
 L1c.Thickness = 9.737604742910693E+001
 L1c.Glass = "AIR"
 L1c.Diameter = 30
-L1c.Coating =[R, A, W, THETA]
+L1c.Coating = [R, A, W, THETA]
 
 
 P_Ima = Kos.surf()
@@ -86,7 +90,7 @@ Doblete = Kos.system(A, configuracion_1)
 Rayos = Kos.raykeeper(Doblete)
 
 
-Doblete.energy_probability=1 # 0 for transmission only
+Doblete.energy_probability = 1  # Use 0 for transmission-only behavior.
 Doblete.NsLimit
 
 

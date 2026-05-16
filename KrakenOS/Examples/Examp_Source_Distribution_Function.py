@@ -1,12 +1,18 @@
 """
 Custom source distribution function.
 
-Defines a nontrivial source distribution and traces the generated rays through a simple optical system.
+This example defines several source probability distributions and traces the
+generated rays through a simple mirror system. Change `examp` to compare a
+solar-like profile, sinc profile, flat distribution, parabolic distribution, or
+Gaussian seeing profile.
 
-What to look at:
-- the source sampling function.
-- the conversion from sampled coordinates to rays.
-- the resulting 3D ray distribution.
+Key ideas:
+- defining a custom source function for `SourceRnd`
+- converting sampled source coordinates into traced rays
+- plotting only rays that reach the image surface
+
+The `Rays.push()` and 3D display calls are intentionally commented. They are
+useful when debugging the full ray set, but they make the example heavier.
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -76,7 +82,7 @@ if examp == 0:
     Sun.field = 20 * np.rad2deg((4.65 / 1000.0))
 
 if examp == 1:
-    # Sinc cunction
+    # Sinc function
     def f(x):
         Wh = 0.025
         r = (x * 90.0 / 0.025) * np.pi
@@ -145,6 +151,7 @@ for i in range(0, Sun.num):
     Nr[con] = Telescope.SURFACE[-1]
     con = con + 1
     con2 = con2 + 1
+    # Optional didactic ray storage for 3D visualization:
     # Rays.push()
 
 args = np.argwhere(Nr == 2)
@@ -159,5 +166,5 @@ plt.title('Spot diagram')
 plt.axis('square')
 plt.show()
 
-#             Rays.push()
+# Optional didactic display:
 # Kos.display3d(Telescope, Rays, 0)

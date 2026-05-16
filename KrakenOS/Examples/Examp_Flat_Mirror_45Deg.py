@@ -3,10 +3,17 @@
 """
 Flat mirror at 45 degrees.
 
-Reflects a ray bundle from a tilted flat mirror, a useful check for coordinates and sign conventions.
+This example sends a doublet ray bundle to a tilted flat mirror. It is a useful
+coordinate and sign-convention check because the reflected bundle is displayed
+both in the system layout and in a final spot plot.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+Key ideas:
+- inserting a flat `MIRROR` surface after a refractive group
+- using `TiltX` and `AxisMove` to orient the fold mirror
+- comparing three wavelengths after reflection
+
+The 3D display line is intentionally commented because the 2D layout plus spot
+diagram usually opens faster while editing the example.
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -61,7 +68,7 @@ Esp90 = Kos.surf()
 Esp90.Thickness = POS_ESP
 Esp90.Glass = "MIRROR"
 Esp90.Diameter = 30.0
-Esp90.Name = "Espejo a 90 grados"
+Esp90.Name = "45 degree fold mirror"
 Esp90.TiltX = 45.
 Esp90.AxisMove = 2.
 
@@ -114,6 +121,7 @@ for j in range(-tam, tam + 1):
             RayosT.push()
 
 
+# Optional didactic display:
 # Kos.display3d(Doblete, RayosT, 2)
 
 system = Doblete
@@ -129,7 +137,7 @@ plt.plot(X, Z, 'x')
 X, Y, Z, L, M, N = Rayos3.pick(-1)
 plt.plot(X, Z, 'x')
 plt.xlabel('X')
-plt.ylabel('Y')
+plt.ylabel('Z')
 plt.title('Spot Diagram')
 plt.axis('square')
 plt.show()

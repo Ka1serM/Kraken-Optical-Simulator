@@ -3,10 +3,14 @@
 """
 Ideal thin-lens element.
 
-Uses a perfect lens surface to show the behavior of an ideal focusing element.
+This example builds a simple system from ideal thin-lens surfaces. It is meant
+as a lightweight way to understand KrakenOS thin-lens behavior before moving to
+full refractive surface definitions.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+Key ideas:
+- assigning ideal focal power with `Thin_Lens`
+- tracing a circular grid of rays through the ideal elements
+- plotting the final local coordinates at the image plane
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.

@@ -3,10 +3,14 @@
 """
 Non-sequential doublet trace.
 
-Uses the same doublet geometry as a small non-sequential tracing example.
+This example uses a compact doublet geometry as a non-sequential tracing case.
+The final surface is reflective and tilted so rays can take paths that are not
+limited to the usual ordered surface sequence.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
+Key ideas:
+- building a normal `Kos.system` and then tracing with `NsTrace`
+- using `energy_probability` and `NsLimit` to control non-sequential behavior
+- pushing each traced path into a `raykeeper` for 3D inspection
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -73,7 +77,7 @@ Doblete = Kos.system(A, configuracion_1)
 Rayos = Kos.raykeeper(Doblete)
 
 
-Doblete.energy_probability=1 # 0 for transmission only
+Doblete.energy_probability = 1  # Use 0 for transmission-only behavior.
 Doblete.NsLimit=50
 
 

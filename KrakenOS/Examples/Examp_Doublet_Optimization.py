@@ -3,12 +3,19 @@
 """
 Doublet optimization example.
 
-Uses a doublet model as an optimization target and evaluates the result with ray tracing and pupil tools.
+This example optimizes a simple cemented doublet by varying three radii. The
+merit function combines effective focal length, chromatic focal-length change,
+and RMS spot radius after tracing.
 
-What to look at:
-- how the entrance pupil or ray bundle is calculated.
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the merit quantity used to compare optical performance.
+Key ideas:
+- wrapping KrakenOS tracing inside a SciPy `least_squares` merit function
+- using paraxial effective focal length as part of the merit target
+- refocusing with a small RMS minimization after the optimization
+- comparing final spot diagrams at three wavelengths
+
+The commented block at the end is intentionally left as an optional experiment
+for users who want to extend the script into a more interactive optimization
+notebook.
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -267,6 +274,7 @@ SURF = [-1, -1, -1]
 MyPlot(RAYS, SURF, figure= "Spot", mk = MK, col = COL)
 
 
+# Optional didactic extension:
 # rays = Trace_Array(Lens, 0.5)
 
 # x,y,z,l,m,n = rays.pick(-1, coordinates="local")

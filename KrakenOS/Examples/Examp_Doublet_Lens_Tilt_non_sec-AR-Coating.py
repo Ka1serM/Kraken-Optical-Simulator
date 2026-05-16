@@ -3,10 +3,14 @@
 """
 Tilted non-sequential doublet with coating data.
 
-Combines tilt, non-sequential tracing, and coating behavior in a compact doublet example.
+This example combines a tilted doublet, non-sequential tracing, and simple
+coating tables. It is useful for checking how tilted geometry and probabilistic
+surface behavior interact in the 3D ray viewer.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
+Key ideas:
+- assigning coating tables to multiple surfaces
+- using `AxisMove`, tilt, and decenter terms in a non-sequential system
+- tracing multiple wavelengths with `NsTrace`
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -48,8 +52,8 @@ A = [[0.0, 0.0, 0.0],
 W = [0.35, 0.45, 0.55]
 # angle
 THETA = [0, 45]
-# anti reflection coating
-L1a.Coating =[R, A, W, THETA]
+# Anti-reflection coating table in KrakenOS format.
+L1a.Coating = [R, A, W, THETA]
 
 L1b = Kos.surf()
 L1b.Rc = (-3.0E+001)
@@ -57,7 +61,7 @@ L1b.Thickness = 3.0
 L1b.Glass = "F2"
 L1b.Diameter = 30
 THETA = [0, 45]
-L1b.Coating =[R, A, W, THETA]
+L1b.Coating = [R, A, W, THETA]
 
 
 L1c = Kos.surf()
@@ -67,7 +71,7 @@ L1c.Glass = "AIR"
 L1c.Diameter = 30
 
 
-L1c.Coating =[R, A, W, THETA]
+L1c.Coating = [R, A, W, THETA]
 
 
 P_Ima = Kos.surf()
@@ -84,7 +88,7 @@ configuracion_1 = Kos.Setup()
 
 Doblete = Kos.system(A, configuracion_1)
 Rayos = Kos.raykeeper(Doblete)
-Doblete.energy_probability=1
+Doblete.energy_probability = 1
 
 
 tam = 30

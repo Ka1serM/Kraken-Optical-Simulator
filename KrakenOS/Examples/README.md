@@ -26,13 +26,13 @@ in this folder when they are required by the original scripts.
 
 For a first pass, use this order:
 
-1. `Examp_Ray.py` — a minimal ray-tracing example.
-2. `Examp_Sphere.py` and `Examp_Flat_Mirror_45Deg.py` — basic surfaces and mirrors.
-3. `Examp_Doublet_Lens.py` — a full sequential lens example with best-focus logic.
-4. `Examp_Doublet_Lens_Pupil.py` — pupil calculation and ray sampling.
-5. `Examp_Diffraction_Grating_Transmission.py` and `Examp_CzernyTurner.py` — dispersive systems.
-6. `Examp_Prism_STL.py` and `Examp_Solid_Object_STL.py` — non-sequential STL geometry.
-7. `Examp_Tel_2M.py` and the other `Examp_Tel_2M_*` files — telescope-level examples.
+1. `Examp_Ray.py` - a minimal ray-tracing example.
+2. `Examp_Sphere.py` and `Examp_Flat_Mirror_45Deg.py` - basic surfaces and mirrors.
+3. `Examp_Doublet_Lens.py` - a full sequential lens example with best-focus logic.
+4. `Examp_Doublet_Lens_Pupil.py` - pupil calculation and ray sampling.
+5. `Examp_Diffraction_Grating_Transmission.py` and `Examp_CzernyTurner.py` - dispersive systems.
+6. `Examp_Prism_STL.py` and `Examp_Solid_Object_STL.py` - non-sequential STL geometry.
+7. `Examp_Tel_2M.py` and the other `Examp_Tel_2M_*` files - telescope-level examples.
 
 ## Naming note
 

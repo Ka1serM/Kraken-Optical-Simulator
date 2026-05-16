@@ -3,12 +3,14 @@
 """
 Telescope made from ideal thin lenses.
 
-Uses ideal thin-lens elements to build a simplified telescope and inspect pupil behavior.
+This example builds a simplified telescope using ideal thin lenses. It is a
+compact teaching case for pupil sampling, field angle, and basic telescope
+ray geometry without the extra complexity of real glass surfaces.
 
-What to look at:
-- how the entrance pupil or ray bundle is calculated.
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the merit quantity used to compare optical performance.
+Key ideas:
+- creating ideal objective and eyepiece surfaces with `Thin_Lens`
+- sampling three field angles through `PupilCalc`
+- displaying the resulting telescope layout in 2D
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -50,7 +52,7 @@ def BestFocus(X, Y, Z, L, M, N, system, mod=1):
 
 P_Obj = Kos.surf(Thickness = 120, Diameter = 120)
 L1 = Kos.surf(Thin_Lens = 1000.0, Thickness =1000.0 + 20, Diameter = 120)
-L1.Name = "Objetive"
+L1.Name = "Objective"
 L1.Nm_Pos = (-20,100)
 L2 = Kos.surf(Thin_Lens = 20.0, Thickness = 50.0, Diameter = 20.0)
 L2.Name = "Eyepiece"

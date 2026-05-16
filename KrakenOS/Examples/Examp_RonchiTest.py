@@ -1,12 +1,15 @@
 """
 Ronchi test layout.
 
-Sets up a Ronchi-style test geometry and traces rays through the modeled test arrangement.
+This example sets up a Ronchi-style test geometry using PyVista planes as a
+mask. It traces a random source distribution through the Ronchi screen, mirror,
+and return screen, then plots the rays that reach the image plane.
 
-What to look at:
-- the grating or screen placement.
-- the ray bundle sampling.
-- the 3D visualization of the test geometry.
+Key ideas:
+- building a mask from repeated PyVista plane elements
+- assigning that mask to `Mask_Shape` and `Mask_Type`
+- sampling a source with `SourceRnd`
+- comparing the image-plane plot with the 3D layout
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -128,5 +131,5 @@ plt.title('Spot diagram')
 plt.axis('square')
 plt.show()
 
-#             Rays.push()
+# Optional didactic display of the full ray set:
 Kos.display3d(Telescope, Rays, 1)

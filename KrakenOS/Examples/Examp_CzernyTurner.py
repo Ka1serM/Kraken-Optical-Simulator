@@ -3,12 +3,18 @@
 """
 Czerny-Turner spectrograph layout.
 
-Builds a compact Czerny-Turner-style layout and traces rays through mirrors and a dispersive element.
+This example builds a compact Czerny-Turner-style layout with two off-axis
+parabolic mirrors and a diffraction grating. It traces two wavelength bands so
+the dispersion can be inspected in the 3D viewer.
 
-What to look at:
-- how the entrance pupil or ray bundle is calculated.
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the grating parameters and diffraction order.
+Key ideas:
+- setting the grating spacing and diffraction order with `Grating_D` and
+  `Diff_Ord`
+- using `PupilCalc` to generate a field ray fan
+- comparing two wavelength ranges with separate ray keepers
+
+The commented formula block at the end is intentionally left as a didactic
+scratch area for checking the grating angle calculation.
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -117,6 +123,9 @@ for dw in DW:
     Kos.TraceLoop(x, y, z, L, M, N, W + dw, Rays2, clean = 0)
 
 
+# Optional didactic display:
+# This direct display call is left commented because the example below uses
+# `display3d_OB` to overlay two wavelength sets in the same viewer.
 # Kos.display3d(ZernTurn, Rays, 0)
 
 
@@ -131,6 +140,7 @@ P3D.RAYS = Rays2
 P3D.plot()
 
 
+# Optional didactic check:
 # d=1
 # Tii= Theta
 # Ti = np.deg2rad(Tii)

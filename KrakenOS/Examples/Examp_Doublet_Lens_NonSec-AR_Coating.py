@@ -3,10 +3,17 @@
 """
 Non-sequential doublet trace with coating data.
 
-Uses non-sequential tracing and coating settings to follow ray paths that include probabilistic energy behavior.
+This example extends the non-sequential doublet case with coating tables.
+The coating arrays are left close to the surface definitions so users can see
+how reflectivity, absorption, wavelength, and angle samples are grouped.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
+Key ideas:
+- assigning coating tables with `[R, A, W, THETA]`
+- enabling probabilistic energy handling with `energy_probability`
+- tracing with `NsTrace` instead of the sequential `Trace`
+
+The commented coating block is intentional. Uncomment it to experiment with a
+custom coating definition on each lens surface.
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -42,6 +49,7 @@ L1a.Glass = "BK7"
 L1a.Diameter = 30.0
 L1a.Axicon = 0
 
+# Optional didactic coating table:
 # R = [[0.0, 0.0, 0.0],
 #       [0.0, 0.0, 0.0]]
 
@@ -86,7 +94,8 @@ Doblete = Kos.system(A, configuracion_1)
 Rayos = Kos.raykeeper(Doblete)
 
 
-Doblete.energy_probability= 1 # 0 for transmission only
+Doblete.energy_probability = 1  # Use 0 for transmission-only behavior.
+# Optional didactic setting:
 # Doblete.NsLimit
 
 

@@ -3,11 +3,15 @@
 """
 Spherical surface example.
 
-Builds a compact spherical-surface model and traces rays through the geometry.
+This example traces a small ray fan from a spherical mirror and prints the
+computed reflection coefficients. It also demonstrates loading a metal coating
+resource from the installed KrakenOS package.
 
-What to look at:
-- how the entrance pupil or ray bundle is calculated.
-- the ray source, direction cosines, and wavelength passed to Trace.
+Key ideas:
+- loading packaged metal data with `importlib.resources`
+- assigning a mirror coating model
+- using `PupilCalc` to trace a simple ray fan
+- inspecting S and P polarization reflection outputs
 
 Units are the KrakenOS example defaults: distances in millimeters and
 wavelengths in micrometers unless the code states otherwise.
@@ -76,6 +80,7 @@ Kos.TraceLoop(x, y, z, L, M, N, W, Rayos, clean = 1)
 Kos.display3d(Espejo, Rayos, 0)
 
 
+# Optional didactic inspection:
 # print(Rayos.TP)
 # print(Rayos.TS)
 print(Rayos.RS[0], Rayos.RS[1], Rayos.RS[2])

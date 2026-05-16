@@ -2,17 +2,22 @@
 #!/usr/bin/env python3
 
 # -*- coding: utf-8 -*-
-"""
-Radial sine extra shape.
+"""Example: radial sine extra surface shape.
 
-Adds a radial sine perturbation to a surface and traces the ray response.
+This example defines a radial sine perturbation and assigns it to a surface
+with `ExtraData`.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- how custom surface or aperture data are attached to a surface.
+What this example teaches:
+- how to write a radial user-defined surface function
+- how coefficient values control the perturbation period and amplitude
+- how to visualize the ray response to a custom surface
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view and a 2D view of rays interacting with the radial sine surface
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys

@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Doublet lens Zernike output.
+"""Example: doublet lens with a Zernike-defined surface.
 
-Traces a doublet and reports Zernike-style wavefront information for the selected configuration.
+This example assigns several Zernike coefficients to one surface of a doublet,
+traces a ray bundle, and displays the resulting system.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the aberration output produced after tracing.
+What this example teaches:
+- how to fill the `ZNK` coefficient array
+- how Zernike terms can be attached directly to a `surf` object
+- how to inspect the resulting ray behavior in 2D and 3D
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view and a 2D view of the traced ray bundle
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys

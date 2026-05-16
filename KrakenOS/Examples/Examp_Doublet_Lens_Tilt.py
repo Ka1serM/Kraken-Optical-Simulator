@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Tilted doublet lens.
+"""Example: tilted and decentered doublet lens.
 
-Tilts and decenters a doublet component and traces the resulting ray bundle.
+This example tilts and decenters one surface in a repeated doublet sequence and
+traces the resulting multi-wavelength ray bundle.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how to use `TiltX`, `DespY`, `AxisMove`, and repeated surfaces
+- how coordinate transformations affect the propagated optical axis
+- how to inspect the result in both 3D and 2D
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view and a 2D view of the tilted doublet system
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

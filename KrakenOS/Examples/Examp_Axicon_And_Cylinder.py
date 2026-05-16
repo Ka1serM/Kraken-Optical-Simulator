@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Axicon combined with cylindrical power.
+"""Example: axicon combined with cylindrical power.
 
-Combines an axicon term with a cylindrical contribution to show how nonstandard surface parameters interact.
+This example combines an axicon term with a cylindrical contribution on the
+same surface to show how nonstandard surface parameters interact.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how `Axicon` and `Cylinder_Rxy_Ratio` can be combined
+- how a conic constant and cylindrical ratio change the ray bundle
+- how to visualize the combined surface effect in 3D
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of the multi-wavelength ray bundle after the combined surface
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

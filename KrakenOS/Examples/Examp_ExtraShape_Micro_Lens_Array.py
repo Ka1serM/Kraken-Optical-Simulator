@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Micro-lens array extra shape.
+"""Example: micro-lens array as an extra surface shape.
 
-Attaches an extra-shape description to a surface to approximate a micro-lens array.
+This example approximates a micro-lens array by folding local coordinates into
+repeated cells and evaluating a conic-like sag function in each cell.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- how custom surface or aperture data are attached to a surface.
+What this example teaches:
+- how a custom `ExtraData` function can describe repeated surface cells
+- how the coefficient list controls pitch, curvature, and conic behavior
+- how to keep a 3D display active while leaving 2D plotting optional
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of rays interacting with the micro-lens array surface
+
+Didactic note:
+- the 2D display call is intentionally commented. Uncomment it if you want a
+  simpler projection after inspecting the 3D geometry.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys
@@ -84,4 +93,6 @@ for i in range(-100, 100 + 1):
 
 
 Kos.display3d(Lens, Rays, 1)
+# Optional didactic display:
+# Uncomment this line to inspect the same ray bundle in a 2D projection.
 # Kos.display2d(Lens, Rays, 0)

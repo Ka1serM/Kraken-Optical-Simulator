@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Tilted non-sequential doublet.
+"""Example: tilted doublet with non-sequential tracing.
 
-Uses non-sequential tracing to follow rays through a tilted doublet system.
+This example uses `NsTrace` to follow rays through a tilted doublet system
+where surface order is handled by the non-sequential solver.
 
-What to look at:
-- the difference between sequential Trace and non-sequential NsTrace.
+What this example teaches:
+- when to use `NsTrace` instead of sequential `Trace`
+- how `build = 0` can be used for a lighter non-sequential setup
+- how `energy_probability` is enabled for non-sequential propagation
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of the non-sequential traced rays
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

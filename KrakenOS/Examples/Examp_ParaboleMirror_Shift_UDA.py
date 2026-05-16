@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Shifted parabolic mirror with user-defined aperture.
+"""Example: shifted parabolic mirror with user-defined aperture.
 
-Traces rays on a shifted parabolic mirror using a user-defined aperture or surface constraint.
+This example traces rays on a shifted parabolic mirror using a polygonal
+user-defined aperture with an inner obstruction.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- how custom surface or aperture data are attached to a surface.
-- the merit quantity used to compare optical performance.
+What this example teaches:
+- how to define UDA vertices for an outer aperture and an inner obstruction
+- how a shifted mirror surface can be clipped by a custom aperture
+- how to extract local ray data and estimate an RMS spot radius
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of the shifted mirror and ray bundle
+- a printed RMS-like spot metric
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

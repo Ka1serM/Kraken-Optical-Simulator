@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-XY cosine extra shape.
+"""Example: XY cosine extra surface shape.
 
-Adds a two-dimensional cosine perturbation to a surface and compares the traced result with the nominal geometry.
+This example defines a Python function for a two-dimensional cosine surface
+perturbation and attaches it to a KrakenOS surface through `ExtraData`.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- how custom surface or aperture data are attached to a surface.
+What this example teaches:
+- how a user-defined function can become a surface shape
+- how the `ExtraData = [function, coefficients]` convention is used
+- how a custom surface modifies a simple ray fan
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view and a 2D view of rays interacting with the custom surface
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys

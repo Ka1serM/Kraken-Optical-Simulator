@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Faceted user-defined surface.
+"""Example: faceted user-defined surface.
 
-Builds a faceted surface from user data and traces rays across the resulting local surface normals.
+This example builds a faceted surface from Python data, assigns it through
+`ExtraData`, and traces rays through the resulting local surface normals.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- how custom surface or aperture data are attached to a surface.
+What this example teaches:
+- how to represent a surface with a callable Python object
+- how facet centers and facet normals can define local planar surface patches
+- how UDA and ExtraData can be used together
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view and a 2D view of rays interacting with the faceted surface
+
+Didactic note:
+- random facet tilts are generated each time the script runs, so the exact
+  plotted result can change between runs.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys
@@ -136,8 +145,8 @@ L1c.Diameter = m
 L1c.ExtraData = [Faceted, None]     # Second argument is unused
 L1c.Glass = "AIR"
 L1c.UDA = [px, py]                   # Use the same UDA as L1a
-L1c.DerPres =0.000  # cero by default
-L1c.Res = 1 # One by default
+L1c.DerPres = 0.000  # Zero by default
+L1c.Res = 1  # One by default
 
 # Define the image plane
 

@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Axicon surface example.
+"""Example: axicon surface.
 
-Traces rays through an axicon-like surface and visualizes the conical refraction behavior.
+This example traces a multi-wavelength ray bundle through an axicon-like
+surface and visualizes the resulting conical refraction behavior.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how to assign the `Axicon` parameter to a `surf` object
+- how an axicon-like surface changes a simple collimated ray bundle
+- how to compare the effect at several wavelengths
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of rays after the axicon surface
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np

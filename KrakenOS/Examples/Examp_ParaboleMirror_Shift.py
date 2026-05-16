@@ -1,16 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Shifted parabolic mirror.
+"""Example: shifted parabolic mirror.
 
-Traces a bundle on an off-axis or shifted parabolic mirror and evaluates the resulting spot.
+This example traces a ray bundle on a shifted parabolic mirror and evaluates
+the resulting spot size.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- the merit quantity used to compare optical performance.
+What this example teaches:
+- how to model a mirror with `Glass = "MIRROR"`
+- how `ShiftY` moves the surface function relative to the aperture
+- how to extract local ray data and estimate an RMS spot radius
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 2D layout of the mirror system
+- a printed RMS-like spot metric
+- a spot diagram plotted with Matplotlib
+
+Didactic note:
+- the commented pickle block is intentionally left as an optional experiment
+  for saving and reloading a full system object. It is disabled by default
+  because it creates a local file and is not needed for the optical result.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import numpy as np
@@ -58,8 +70,10 @@ Espejo = Kos.system(A, configuracion_1)
 # Espejo = Kos.system_Lite(A, configuracion_1)
 
 
+# Optional didactic serialization experiment:
+# Uncomment this block to save and reload the full system object with pickle.
 # with open('mi_objeto.pkl', 'wb') as archivo_salida:
-#     # Usa pickle.dump para serializar y guardar el objeto en el archivo.
+#     # Save the system object to a local pickle file.
 #     pickle.dump(Espejo, archivo_salida)
 
 # with open('mi_objeto.pkl', 'rb') as archivo_entrada:

@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-XY cosine surface with user-defined aperture.
+"""Example: XY cosine surface with a user-defined aperture.
 
-Combines an XY cosine surface perturbation with a user-defined aperture or surface description.
+This example combines an `ExtraData` cosine surface with a polygonal
+user-defined aperture (`UDA`).
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
-- how custom surface or aperture data are attached to a surface.
+What this example teaches:
+- how to define a polygonal useful diameter area from x/y vertices
+- how to attach the same UDA to more than one surface
+- how to combine aperture limits with a user-defined surface shape
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- a 3D view of rays filtered by the polygonal aperture and custom surface
+
+Didactic note:
+- the 2D display call is intentionally commented. Uncomment it if you want to
+  compare the same geometry in projection.
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys
@@ -105,4 +114,6 @@ for i in range(-100, 100 + 1):
 
 
 Kos.display3d(Lens, Rays, 0)
+# Optional didactic display:
+# Uncomment this line to inspect the same ray bundle in a 2D projection.
 # Kos.display2d(Lens, Rays, 0)

@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Doublet lens with a cylindrical surface term.
+"""Example: doublet lens with a cylindrical surface term.
 
-Adds a cylindrical contribution to one surface of a doublet and traces the resulting astigmatic behavior.
+This example adds cylindrical behavior to one surface of a doublet and traces
+the resulting astigmatic ray behavior in two 2D projections.
 
-What to look at:
-- the ray source, direction cosines, and wavelength passed to Trace.
+What this example teaches:
+- how to use `Cylinder_Rxy_Ratio`
+- how surface tilt and `AxisMove` interact with cylindrical geometry
+- why inspecting more than one 2D projection can be useful
 
-Units are the KrakenOS example defaults: distances in millimeters and
-wavelengths in micrometers unless the code states otherwise.
+Expected output:
+- two 2D plots from different viewing directions
+
+Units:
+- distances are in millimeters
+- wavelengths are in micrometers
 """
 
 import sys

@@ -1,8 +1,9 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Examp Parabole Mirror Shift"""
 
 import numpy as np
+from importlib import resources
 
 
 import sys
@@ -20,7 +21,7 @@ P.Thickness = 10.0
 P.Diameter = 5
 
 
-file = r"prism.stl"
+file = resources.files("KrakenOS") / "Examples" / "prism.stl"
 Solid = Kos.surf()
 Solid.Diameter = 20
 Solid.Solid_3d_stl = file

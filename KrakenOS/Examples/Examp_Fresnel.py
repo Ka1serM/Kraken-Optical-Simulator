@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Simulation of a Fresnel lens using KrakenOS
@@ -100,7 +100,7 @@ class FresnelPrepare:
 # Define the Fresnel lens from the profile file
 # -----------------------------------------------------------------------------
 
-file = resources.files("KrakenOS.Examples") / "R1064_F1800.txt"  # Lens profile file
+file = resources.files("KrakenOS") / "Examples" / "R1064_F1800.txt"  # Lens profile file
 fresnel = FresnelPrepare(file)
 E = []  # Placeholder for additional data if needed
 

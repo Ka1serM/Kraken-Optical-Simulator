@@ -1,9 +1,10 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Examp Tel 2M Spyder Spot Diagram"""
 
 # import os
 import numpy as np
+from importlib import resources
 
 
 import sys
@@ -51,7 +52,7 @@ Vertex.Drawing = 0
 
 # ______________________________________#
 
-file = r"Prisma.stl"
+file = resources.files("KrakenOS") / "Examples" / "Prisma.stl"
 
 # ______________________________________#
 

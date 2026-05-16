@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Examp Parabole Mirror Shift"""
 
@@ -43,7 +43,7 @@ P_Ima.Name = "Plano imagen"
 A = [P_Obj, M1, P_Ima]
 configuracion_1 = Kos.Setup()
 
-MATERIAL_PATH = resources.files("KrakenOS.Cat") / "Gold.csv"
+MATERIAL_PATH = resources.files("KrakenOS") / "Cat" / "Gold.csv"
 
 configuracion_1.LoadMetal(MATERIAL_PATH, "Gold", 1)
 

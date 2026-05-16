@@ -52,14 +52,20 @@ def main():
         fresnel_profile = kraken_resources / "Examples" / "R1064_F1800.txt"
         thorlabs_catalog = kraken_resources / "LensCat" / "THORLABS.ZMF"
         zemax_lens = kraken_resources / "LensCat" / "zmax_84383.zmx"
+        prism_stl = kraken_resources / "Examples" / "prism.stl"
+        prisma_stl = kraken_resources / "Examples" / "Prisma.stl"
         assert gold_csv.exists(), f"Missing resource: {gold_csv}"
         assert fresnel_profile.exists(), f"Missing resource: {fresnel_profile}"
         assert thorlabs_catalog.exists(), f"Missing resource: {thorlabs_catalog}"
         assert zemax_lens.exists(), f"Missing resource: {zemax_lens}"
+        assert prism_stl.exists(), f"Missing resource: {prism_stl}"
+        assert prisma_stl.exists(), f"Missing resource: {prisma_stl}"
         lines.append("PASS importlib.resources finds Cat/Gold.csv")
         lines.append("PASS importlib.resources finds Examples/R1064_F1800.txt")
         lines.append("PASS importlib.resources finds LensCat/THORLABS.ZMF")
         lines.append("PASS importlib.resources finds LensCat/zmax_84383.zmx")
+        lines.append("PASS importlib.resources finds Examples/prism.stl")
+        lines.append("PASS importlib.resources finds Examples/Prisma.stl")
 
         lines.append("RESULT PASS")
         write_report(lines)

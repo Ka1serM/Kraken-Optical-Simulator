@@ -40,6 +40,11 @@ manual instead of replacing it.
 
    Use this for focused notes on the compact PSF/MTF helpers.
 
+8. [Maintenance Log](maintenance_log.md)
+
+   Use this as an internal handoff log: change control, verification commands,
+   and suggested commit messages for each maintenance iteration.
+
 ## Documentation Roles
 
 | Document | Role |
@@ -51,6 +56,7 @@ manual instead of replacing it.
 | `example_coverage.md` | Maintenance and growth roadmap. |
 | `architecture.md` | Internal architecture and refactor notes. |
 | `psf_mtf_notes.md` | Focused technical note. |
+| `maintenance_log.md` | Internal iteration log and handoff notes. |
 
 To regenerate the example figures and generated examples manual:
 

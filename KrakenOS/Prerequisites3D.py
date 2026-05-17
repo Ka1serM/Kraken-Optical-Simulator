@@ -2,7 +2,7 @@
 import numpy as np
 from .UDA import *
 from .MeshBlock import MeshBlock
-from .GeometryBackend import is_polydata, make_disc, make_polydata, read_mesh
+from .GeometryBackend import compute_normals, is_polydata, make_disc, make_polydata, read_mesh
 
 
 def interpolate_coordinates(x, y, num_points=362):
@@ -258,7 +258,7 @@ class Prerequisites():
             else:
                 L_te_h = self.SDT[j].Solid_3d_stl
 
-            L_te_h = L_te_h.compute_normals(cell_normals=True, point_normals=True, split_vertices=True, flip_normals=False, consistent_normals=True, auto_orient_normals=False, non_manifold_traversal=True, feature_angle=30.0, inplace = False)
+            L_te_h = compute_normals(L_te_h)
         L_te_h = self.GeometricRotatAndTran(L_te_h, j)
         OBJECT_MASK = MeshBlock()
         for mask in MASK:
@@ -364,7 +364,7 @@ class Prerequisites():
         Ay = np.asarray(Ay)
         Az = np.asarray(Az)
 
-        cant = cant.compute_normals(cell_normals=True, point_normals=True, split_vertices=True, flip_normals=False, consistent_normals=True, auto_orient_normals=False, non_manifold_traversal=True, feature_angle=30.0, inplace = False)
+        cant = compute_normals(cant)
 
         return cant
 
@@ -526,7 +526,7 @@ class Prerequisites():
         Ay = np.asarray(Ay)
         Az = np.asarray(Az)
 
-        cant = cant.compute_normals(cell_normals=True, point_normals=True, split_vertices=True, flip_normals=False, consistent_normals=True, auto_orient_normals=False, non_manifold_traversal=True, feature_angle=30.0, inplace = False)
+        cant = compute_normals(cant)
 
         return cant
 

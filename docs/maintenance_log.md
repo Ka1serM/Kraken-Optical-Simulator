@@ -621,3 +621,52 @@ Follow-up:
   were already modified/untracked locally during this iteration context. Review
   them separately before including in any commit.
 
+### 2026-05-17 - Centralize PyVista Normal Computation
+
+Goal:
+
+- Keep `Prerequisites3D.py` behavior unchanged while making PyVista normal
+  computation easier to review and maintain.
+
+Files changed:
+
+- `KrakenOS/GeometryBackend.py`
+- `KrakenOS/Prerequisites3D.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a shared `NORMAL_OPTIONS` dictionary to `GeometryBackend.py`.
+- Added `compute_normals(mesh)` as the internal backend wrapper for PyVista
+  normal generation.
+- Replaced three repeated `mesh.compute_normals(...)` calls in
+  `Prerequisites3D.py` with `compute_normals(mesh)`.
+- Preserved the same PyVista options, including `inplace=False`, so the mesh
+  returned by PyVista is still used explicitly.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\GeometryBackend.py KrakenOS\Prerequisites3D.py
+python tests\test_smoke.py
+python tests\test_build_modes.py
+python tests\test_examples_subset.py
+```
+
+Notes:
+
+- The examples subset still reports existing numerical runtime warnings in
+  `Physics.py` and `PhysicsClass.py`; these warnings did not fail the test.
+
+Suggested commit:
+
+```text
+Centralize PyVista normal computation
+```
+
+```text
+- Add a shared compute_normals helper in GeometryBackend
+- Route Prerequisites3D normal generation through the backend adapter
+- Preserve existing PyVista normal options and returned-mesh behavior
+- Verify smoke, build mode, and examples subset tests
+```

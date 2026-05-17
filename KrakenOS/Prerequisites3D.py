@@ -563,30 +563,6 @@ class Prerequisites():
             self.DDD.append(0)
             self.counter.append(j)
             self.GlassOnSide.append(j)
-            if (j < (self.n - 1)):
-                if (self.SDT[j].Glass != 'NULL'):
-                    if (self.SDT[j].Glass != 'AIR'):
-                        if (self.SDT[j].Glass != 'MIRROR'):
-                            if (self.SDT[j].Solid_3d_stl == 'None'):
-                                j2 = (j + 1)
-                                while True:
-                                    if ((self.SDT[j].Glass == 'NULL') or (self.SDT[j2].Solid_3d_stl != 'None')):
-                                        j2 = (j2 + 1)
-                                    else:
-                                        break
-                                    if (j2 == (self.n - 1)):
-                                        break
-                                side = self.Side3DDummy(j, j2)
-                                self.BBB.append(side)
-                                self.PreTypeTotal.append(1)
-                                self.PreGlassOnSide.append(j)
-                                self.side_number.append(j)
-        for i in self.BBB:
-            self.EEE.append(i)
-        for i in self.PreGlassOnSide:
-            self.GlassOnSide.append(i)
-        for i in self.PreTypeTotal:
-            self.TypeTotal.append(i)
         self.ExistSolid = 0
 
     def Prerequisites3SMath(self):

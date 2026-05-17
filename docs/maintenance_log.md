@@ -723,3 +723,58 @@ Make tests discoverable by pytest
 - Update the maintenance log with verification notes
 - Verify scripts and pytest test discovery
 ```
+
+### 2026-05-17 - Add Public API Contract Test
+
+Goal:
+
+- Protect the traditional `import KrakenOS as Kos` public API before future
+  changes to package-level imports.
+
+Files changed:
+
+- `tests/test_public_api.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a public API contract test for names used by current examples and
+  documentation, including `surf`, `Setup`, `system`, `raykeeper`, display
+  helpers, pupil tools, PSF/MTF helpers, wavefront helpers, and Zemax/lens
+  catalog helpers.
+- Added a construction smoke check for `surf`, `Setup`, `system(..., build=0)`,
+  and `raykeeper`.
+
+Verification:
+
+```powershell
+python -m py_compile tests\test_public_api.py
+python -m pytest tests
+```
+
+Result:
+
+- `pytest` collected 5 tests and all passed.
+- Existing warnings remain noisy, especially `np.matrix`
+  pending-deprecation warnings.
+
+Notes:
+
+- `Display2D`, `Display3D`, and `system_Lite` appear in searched text but are
+  not currently exposed as `Kos.Display2D`, `Kos.Display3D`, or
+  `Kos.system_Lite`. They were not added to the public API contract in this
+  iteration.
+
+Suggested commit:
+
+```text
+Add public API contract test
+```
+
+```text
+- Add a pytest contract for public KrakenOS names used by examples
+- Verify core objects can still be created through import KrakenOS as Kos
+- Record current non-exposed references for future review
+- Update the maintenance log with verification notes
+- Verify the full pytest suite
+```

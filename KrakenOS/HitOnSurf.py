@@ -41,6 +41,33 @@ class Hit_Solver():
 
 
 
+    def _is_zero_array(self, value):
+        try:
+            return not np.any(np.asarray(value, dtype=float) != 0)
+        except (TypeError, ValueError):
+            return False
+
+    def IsSimplePlane(self, j):
+        """Return True when surface ``j`` is a plain analytical z=0 plane.
+
+        This is intentionally stricter than "the sag happens to evaluate to
+        zero". The fast path must only cover the traditional plane case where
+        Newton intersection and finite-difference normals are mathematically
+        unnecessary. More general features stay on the original solver path.
+        """
+        surf = self.SDT[j]
+        return (
+            surf.Rc == 0
+            and surf.Axicon == 0
+            and surf.Thin_Lens == 0
+            and surf.Diff_Ord == 0
+            and surf.Solid_3d_stl == "None"
+            and len(surf.Error_map) == 0
+            and self._is_zero_array(surf.ZNK)
+            and self._is_zero_array(surf.AspherData)
+            and self._is_zero_array(surf.ExtraData)
+        )
+
     def SurfDer(self, x, y, z):
         #http://www2.math.umd.edu/~dlevy/classes/amsc466/lecture-notes/differentiation-chap.pdf
         """SurfDer.
@@ -198,6 +225,14 @@ class Hit_Solver():
         self.NP_z1 = Pz1
         self.MN = (M / N)
         self.LN = (L / N)
+
+        if self.IsSimplePlane(j):
+            # A simple plane is the local z=0 surface. Once the caller has
+            # projected the ray to z=0, the hit is already known; Newton would
+            # only rediscover the same point through numerical sag calls.
+            self.vevaX = Px1
+            self.vevaY = Py1
+            return (Px1, Py1, 0.0)
 
         for i in range (0,30):
 

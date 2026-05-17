@@ -1053,3 +1053,64 @@ Add parallel sequential trace example
 - Print total and warm parallel timing diagnostics
 - Update the maintenance log
 ```
+
+### 2026-05-17 - Add Simple Plane Fast Path
+
+Goal:
+
+- Avoid unnecessary Newton intersection and finite-difference normal
+  evaluation for strict analytical z=0 plane surfaces.
+
+Files changed:
+
+- `KrakenOS/HitOnSurf.py`
+- `KrakenOS/InterNormalCalc.py`
+- `tests/test_simple_plane_fast_path.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added `Hit_Solver.IsSimplePlane(j)` as a conservative internal predicate for
+  traditional plane surfaces.
+- `SolveHit()` now returns the already-known local plane hit directly for
+  simple planes.
+- `InterNormalCalc.__SigmaOutOrigSpace()` now computes the plane normal through
+  the existing two-point transform convention instead of calling `SurfDer()`.
+- Added code comments documenting why the fast path is intentionally narrow and
+  why general surfaces stay on the original numerical path.
+- Added tests proving:
+  - simple plane tracing avoids Newton and finite-difference normals;
+  - the fast path matches the original general solver when that path is forced.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\HitOnSurf.py KrakenOS\InterNormalCalc.py tests\test_simple_plane_fast_path.py
+python -m pytest tests\test_simple_plane_fast_path.py -q
+python -m pytest tests
+python -m pytest tests\test_trace_performance_components.py -s
+```
+
+Result:
+
+- Full test suite collected 15 tests and all passed.
+- For the representative doublet trace counter, `SurfaceShape` calls dropped
+  from 9034 to 7034 per 1000 rays and `SurfDer` calls dropped from 3000 to
+  2000 per 1000 rays.
+- End-to-end timing on the doublet changed little because the remaining
+  spherical surfaces still dominate the cost; this confirms the next
+  performance target should be conic/spherical intersection and normal logic.
+
+Suggested commit:
+
+```text
+Add simple plane trace fast path
+```
+
+```text
+- Detect strict analytical plane surfaces in Hit_Solver
+- Skip Newton intersection for simple z=0 planes
+- Skip finite-difference normal evaluation for simple planes
+- Add regression tests against the general solver path
+- Update the maintenance log
+```

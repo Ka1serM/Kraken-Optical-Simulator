@@ -198,6 +198,28 @@ class InterNormalCalc():
         j :
             j
         """
+        if self.HS.IsSimplePlane(j):
+            # For a strict z=0 plane the local normal is fixed.  Reusing the
+            # same two-point transform convention as the general branch keeps
+            # the historical normal orientation while avoiding SurfDer's
+            # finite-difference sag evaluations.
+            self.P1[0], self.P1[1], self.P1[2] = P_x2, P_y2, self.P_z1
+            self.P2[0], self.P2[1], self.P2[2] = P_x2, P_y2, P_z2
+
+            NP1 = self.TRANS_2A[j].dot(self.P1)
+            NP2 = self.TRANS_2A[j].dot(self.P2)
+
+            self.Pn[0] = - (NP1[(0, 0)] - NP2[(0, 0)])
+            self.Pn[1] = - (NP1[(0, 1)] - NP2[(0, 1)])
+            self.Pn[2] = - (NP1[(0, 2)] - NP2[(0, 2)])
+
+            LNOR=np.sqrt((self.Pn[0]**2.)+(self.Pn[1]**2.)+(self.Pn[2]**2.))
+            norm = (self.Pn / LNOR)
+
+            PTO_exit = [NP2[(0, 0)], NP2[(0, 1)], NP2[(0, 2)]]
+            PTO_exit_Object_Space = [P_x2, P_y2, P_z2]
+            return (norm, PTO_exit, PTO_exit_Object_Space)
+
         (New_L, New_M, New_N) = self.HS.SurfDer(P_x2, P_y2, P_z2)
 
         Pz1z2 = (self.P_z1 - P_z2)

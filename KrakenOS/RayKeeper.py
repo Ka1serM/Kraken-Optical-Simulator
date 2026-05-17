@@ -1,6 +1,5 @@
 
 import numpy as np
-import pyvista as pv
 
 class raykeeper():
     """raykeeper.
@@ -179,7 +178,7 @@ class raykeeper():
         self.TTBE = []
         self.TT = []
         self.valid_RayWave = []
-        self.valid_CCC = pv.MultiBlock()
+        self.valid_CCC = []
         self.valid_SURFACE = []
         self.valid_NAME = []
         self.valid_GLASS = []
@@ -210,7 +209,7 @@ class raykeeper():
         self.valid_TTBE = []
         self.valid_TT = []
         self.invalid_RayWave = []
-        self.invalid_CCC = pv.MultiBlock()
+        self.invalid_CCC = []
         self.invalid_SURFACE = []
         self.invalid_NAME = []
         self.invalid_GLASS = []

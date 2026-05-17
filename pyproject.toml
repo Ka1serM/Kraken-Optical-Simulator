@@ -30,6 +30,11 @@ dependencies = [
   "pandas"
 ]
 
+[project.optional-dependencies]
+dev = [
+  "pytest"
+]
+
 [project.urls]
 Homepage = "https://github.com/Garchupiter/Kraken-Optical-Simulator"
 Repository = "https://github.com/Garchupiter/Kraken-Optical-Simulator"

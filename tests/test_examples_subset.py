@@ -59,5 +59,9 @@ def main():
         pv.Plotter.show = original_pv_show
 
 
+def test_representative_examples_run():
+    assert main() == 0
+
+
 if __name__ == "__main__":
     raise SystemExit(main())

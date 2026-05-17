@@ -670,3 +670,56 @@ Centralize PyVista normal computation
 - Preserve existing PyVista normal options and returned-mesh behavior
 - Verify smoke, build mode, and examples subset tests
 ```
+
+### 2026-05-17 - Make Tests Pytest Discoverable
+
+Goal:
+
+- Allow maintainers and CI systems to run the existing checks with
+  `python -m pytest tests`.
+- Preserve the previous script-style test execution.
+
+Files changed:
+
+- `pyproject.toml`
+- `tests/test_smoke.py`
+- `tests/test_build_modes.py`
+- `tests/test_examples_subset.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added one `test_*` function to each existing test script.
+- Kept each script's `main()` entry point, so direct execution still works.
+- Added a `dev` optional dependency group with `pytest`.
+
+Verification:
+
+```powershell
+python -m py_compile tests\test_smoke.py tests\test_build_modes.py tests\test_examples_subset.py
+python tests\test_smoke.py
+python tests\test_build_modes.py
+python tests\test_examples_subset.py
+python -m pip install -e ".[dev]"
+python -m pytest tests
+```
+
+Result:
+
+- `pytest` collected 3 tests and all passed.
+- The run reports many existing warnings, mostly `np.matrix`
+  pending-deprecation warnings plus known numerical runtime warnings.
+
+Suggested commit:
+
+```text
+Make tests discoverable by pytest
+```
+
+```text
+- Add pytest-compatible test functions to existing test scripts
+- Keep direct script execution working for the same checks
+- Add pytest as an optional development dependency
+- Update the maintenance log with verification notes
+- Verify scripts and pytest test discovery
+```

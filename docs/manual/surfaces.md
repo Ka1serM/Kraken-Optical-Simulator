@@ -59,6 +59,58 @@ create behavior that is not represented by a simple spherical radius.
 User-defined surface shapes allow KrakenOS to represent structured optical
 surfaces, such as micro-lens arrays or other sampled/analytical profiles.
 
+## Analytical and Numerical Surface Derivatives
+
+KrakenOS uses surface derivatives to compute local surface normals and to solve
+ray-surface intersections. Current KrakenOS can mix two derivative strategies:
+
+- analytical derivatives when the active surface terms support them;
+- numerical finite-difference derivatives as a compatibility fallback.
+
+This is transparent to normal tracing code. Users still call:
+
+```python
+system.Trace(origin, direction, wavelength)
+```
+
+Analytical derivatives are currently available for ordinary planes,
+conic/spherical/parabolic surfaces, polynomial aspheres, Zernike sag terms, and
+axicons away from the singular apex. When these terms are combined on the same
+`surf`, KrakenOS sums their sag values and also sums their derivative
+contributions. This matches the existing surface model:
+
+```text
+Ztotal = Zconic + Zasphere + Zzernike + Zaxicon + ...
+dZtotal/dx = dZconic/dx + dZasphere/dx + dZzernike/dx + dZaxicon/dx + ...
+dZtotal/dy = dZconic/dy + dZasphere/dy + dZzernike/dy + dZaxicon/dy + ...
+```
+
+If any active surface component cannot provide an analytical derivative,
+KrakenOS keeps the previous numerical derivative behavior for that surface. This
+preserves compatibility with existing user-defined `ExtraData` surfaces,
+sampled `Error_map` surfaces, and singular points where an analytical derivative
+is not well defined.
+
+For user-defined `ExtraData`, the classic form remains valid:
+
+```python
+surface.ExtraData = [sag_function, coefficients]
+```
+
+An optional derivative function can be provided when available:
+
+```python
+surface.ExtraData = [sag_function, coefficients, derivative_function]
+```
+
+The derivative function receives the same `(x, y, coefficients)` inputs and must
+return `(dzdx, dzdy)`. If it is omitted, KrakenOS uses the numerical fallback.
+
+Recommended examples:
+
+- [`Examp_ExtraShape_With_Derivative.py`](../../KrakenOS/Examples/Examp_ExtraShape_With_Derivative.py)
+- [`Examp_ParaboleMirror_Derivative_Comparison.py`](../../KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py)
+
 ## Reserved Materials
 
 Common special values for `Glass` include:
@@ -78,3 +130,5 @@ Recommended examples:
 - [`Examp_Doublet_Lens_Cylinder.py`](../../KrakenOS/Examples/Examp_Doublet_Lens_Cylinder.py)
 - [`Examp_Axicon.py`](../../KrakenOS/Examples/Examp_Axicon.py)
 - [`Examp_ExtraShape_XY_Cosines.py`](../../KrakenOS/Examples/Examp_ExtraShape_XY_Cosines.py)
+- [`Examp_ExtraShape_With_Derivative.py`](../../KrakenOS/Examples/Examp_ExtraShape_With_Derivative.py)
+- [`Examp_ParaboleMirror_Derivative_Comparison.py`](../../KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py)

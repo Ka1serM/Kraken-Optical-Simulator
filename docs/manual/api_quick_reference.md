@@ -29,8 +29,23 @@ Common attributes:
 | `Thin_Lens` | Ideal thin-lens focal behavior. |
 | `Diff_Ord`, `Grating_D`, `Grating_Angle` | Grating behavior. |
 | `ZNK` | Zernike surface terms. |
+| `AspherData` | Polynomial aspheric sag terms. |
+| `ExtraData` | User-defined sag function, optionally with analytical derivative. |
 | `Solid_3d_stl` | STL geometry path. |
 | `Coating`, `CoatingMet` | Dielectric or metallic coating data. |
+
+Surface derivative behavior:
+
+- KrakenOS uses analytical sag derivatives when every active surface term can
+  provide one.
+- Analytical derivatives are available for planes, conic/spherical/parabolic
+  surfaces, polynomial aspheres, Zernike sag terms, and axicons away from the
+  singular apex.
+- If a surface includes a component without derivative support, KrakenOS uses
+  the historical finite-difference derivative fallback.
+- Existing user-defined surfaces remain valid with `ExtraData = [f, coef]`.
+- Users can opt into analytical derivatives with
+  `ExtraData = [f, coef, df]`, where `df(x, y, coef)` returns `(dzdx, dzdy)`.
 
 ## `Kos.system`
 

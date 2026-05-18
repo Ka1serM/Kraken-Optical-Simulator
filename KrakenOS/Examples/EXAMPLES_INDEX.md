@@ -37,6 +37,7 @@
 | `Examp_Glass_Catalog_Order.py` | Beginner | Catalog configuration | Glass catalog loading order. | - |
 | `Examp_Lens_Catalog_Basics.py` | Beginner | Lens catalogs | Basic Zemax-style lens catalog loading. | THORLABS.ZMF |
 | `Examp_Metal_Mirror_Energy.py` | Beginner | Metal coatings | Metal mirror reflection and transmission terms. | Gold.csv |
+| `Examp_ParaboleMirror_Derivative_Comparison.py` | Intermediate | Mirror tracing | Shifted parabolic mirror spot comparison with analytical and numerical derivatives. | - |
 | `Examp_ParaboleMirror_Shift.py` | Intermediate | Mirror tracing | Shifted parabolic mirror. | - |
 | `Examp_ParaboleMirror_Shift_UDA.py` | Advanced | Mirror tracing | Shifted parabolic mirror with user-defined aperture. | - |
 | `Examp_Perfect_lens.py` | Beginner | Idealized lens | Ideal thin-lens element. | - |

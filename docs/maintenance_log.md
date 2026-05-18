@@ -1258,3 +1258,127 @@ Add ExtraData derivative example
 - Add the example to the examples index and representative test subset
 - Update the maintenance log
 ```
+
+### 2026-05-17 - Add Parabolic Mirror Derivative Comparison Example
+
+Goal:
+
+- Provide a visual and numerical image-quality comparison between analytical
+  and numerical derivative tracing on a shifted parabolic mirror.
+
+Files changed:
+
+- `KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py`
+- `KrakenOS/Examples/EXAMPLES_INDEX.md`
+- `tests/test_examples_subset.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a parabolic mirror comparison example based on
+  `Examp_ParaboleMirror_Shift.py`.
+- Traces the same ray bundle twice:
+  - once with the analytical derivative path;
+  - once with `sigma_derivative` disabled to force the numerical fallback.
+- Prints RMS spot radius, maximum spot radius, centroid, and trace time.
+- Plots analytical and numerical spot diagrams side by side.
+- Added the example to the examples index and representative examples test.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\Examples\Examp_ParaboleMirror_Derivative_Comparison.py tests\test_examples_subset.py
+python KrakenOS\Examples\Examp_ParaboleMirror_Derivative_Comparison.py
+python -m pytest tests\test_examples_subset.py -q
+python -m pytest tests
+```
+
+Result:
+
+- The example ran successfully.
+- Example output for 697 rays:
+  - analytical RMS spot: `5.182787959976e-14 mm`
+  - numerical fallback RMS spot: `2.577772152048e-13 mm`
+  - RMS improvement factor: `4.974x`
+  - analytical time: `0.115581s`
+  - numerical fallback time: `0.137818s`
+- Full test suite collected 19 tests and all passed.
+
+Suggested commit:
+
+```text
+Add parabolic mirror derivative comparison example
+```
+
+```text
+- Add parabolic mirror image-quality comparison example
+- Compare analytical and numerical derivative tracing paths
+- Plot side-by-side spot diagrams and print RMS metrics
+- Add the example to the examples index and representative test subset
+- Update the maintenance log
+```
+
+### 2026-05-17 - Document Analytical And Numerical Derivatives
+
+Goal:
+
+- Make the new analytical/numerical derivative behavior part of the main user
+  documentation, not only an implementation detail.
+
+Files changed:
+
+- `docs/manual/surfaces.md`
+- `docs/manual/api_quick_reference.md`
+- `docs/examples.md`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a dedicated section in the surfaces manual explaining:
+  - why KrakenOS uses surface derivatives;
+  - when analytical derivatives are used;
+  - when numerical finite-difference fallback is preserved;
+  - how combined sag terms also combine derivative terms.
+- Documented supported analytical derivative terms:
+  - planes;
+  - conic/spherical/parabolic surfaces;
+  - polynomial aspheres;
+  - Zernike sag terms;
+  - axicons away from the singular apex.
+- Documented unsupported/fallback cases:
+  - existing `ExtraData = [f, coef]`;
+  - sampled `Error_map`;
+  - singular points where an analytical derivative is not well defined.
+- Added the optional user-defined derivative form:
+  `ExtraData = [f, coef, df]`.
+- Updated the API quick reference with derivative behavior.
+- Added task-oriented entries in the example guide for:
+  - `Examp_ExtraShape_With_Derivative.py`;
+  - `Examp_ParaboleMirror_Derivative_Comparison.py`.
+
+Verification:
+
+```powershell
+Select-String -Path docs\manual\surfaces.md -Pattern "Analytical and Numerical Surface Derivatives" -Context 0,55
+Select-String -Path docs\manual\api_quick_reference.md -Pattern "Surface derivative behavior" -Context 0,20
+Select-String -Path docs\examples.md -Pattern "derivative" -Context 1,2
+```
+
+Result:
+
+- The derivative behavior is now documented in the main surfaces manual, API
+  quick reference, and example guide.
+
+Suggested commit:
+
+```text
+Document analytical and numerical derivatives
+```
+
+```text
+- Explain analytical and numerical derivative behavior in the surfaces manual
+- Document supported analytical derivative surface terms and fallback cases
+- Add ExtraData derivative syntax to the API quick reference
+- Link derivative examples from the example guide
+- Update the maintenance log
+```

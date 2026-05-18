@@ -101,6 +101,94 @@ def build_asphere_zernike_lens_system():
     return Kos.system([obj, shaped, lens_back, image], Kos.Setup(), build=0)
 
 
+def build_zernike_axis_fallback_system():
+    import KrakenOS as Kos
+
+    obj = Kos.surf()
+    obj.Glass = "AIR"
+    obj.Thickness = 10.0
+    obj.Diameter = 30.0
+
+    shaped = Kos.surf()
+    shaped.Glass = "BK7"
+    shaped.Thickness = 5.0
+    shaped.Diameter = 30.0
+    shaped.ZNK = np.zeros(36)
+    shaped.ZNK[2] = 0.003
+
+    lens_back = Kos.surf()
+    lens_back.Rc = -90.0
+    lens_back.Glass = "AIR"
+    lens_back.Thickness = 20.0
+    lens_back.Diameter = 30.0
+
+    image = Kos.surf()
+    image.Glass = "AIR"
+    image.Thickness = 0.0
+    image.Diameter = 30.0
+
+    return Kos.system([obj, shaped, lens_back, image], Kos.Setup(), build=0)
+
+
+def build_axicon_apex_fallback_system():
+    import KrakenOS as Kos
+
+    obj = Kos.surf()
+    obj.Glass = "AIR"
+    obj.Thickness = 10.0
+    obj.Diameter = 30.0
+
+    axicon = Kos.surf()
+    axicon.Glass = "BK7"
+    axicon.Thickness = 5.0
+    axicon.Diameter = 30.0
+    axicon.Axicon = 1.5
+
+    lens_back = Kos.surf()
+    lens_back.Rc = -90.0
+    lens_back.Glass = "AIR"
+    lens_back.Thickness = 20.0
+    lens_back.Diameter = 30.0
+
+    image = Kos.surf()
+    image.Glass = "AIR"
+    image.Thickness = 0.0
+    image.Diameter = 30.0
+
+    return Kos.system([obj, axicon, lens_back, image], Kos.Setup(), build=0)
+
+
+def build_extra_data_without_derivative_fallback_system():
+    import KrakenOS as Kos
+
+    def user_surface(x, y, data):
+        return data[0] * x * y
+
+    obj = Kos.surf()
+    obj.Glass = "AIR"
+    obj.Thickness = 10.0
+    obj.Diameter = 30.0
+
+    shaped = Kos.surf()
+    shaped.Glass = "BK7"
+    shaped.Thickness = 5.0
+    shaped.Diameter = 30.0
+    shaped.ExtraData = [user_surface, [0.002]]
+
+    lens_back = Kos.surf()
+    lens_back.Rc = -90.0
+    lens_back.Glass = "AIR"
+    lens_back.Thickness = 20.0
+    lens_back.Diameter = 30.0
+
+    image = Kos.surf()
+    image.Glass = "AIR"
+    image.Thickness = 0.0
+    image.Diameter = 30.0
+
+    return Kos.system([obj, shaped, lens_back, image], Kos.Setup(), build=0)
+
+
 def build_small_aperture_lens_system():
     import KrakenOS as Kos
 
@@ -238,6 +326,57 @@ def test_trace_bundle_matches_scalar_for_asphere_zernike_lens_off_axis():
         dtype=float,
     )
     _default_origins, directions = make_default_rays()
+
+    bundle, _scalar = assert_bundle_matches_scalar(system, origins, directions)
+
+    assert np.all(bundle["active"])
+
+
+def test_trace_bundle_matches_scalar_with_zernike_axis_fallback():
+    system = build_zernike_axis_fallback_system()
+    origins = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [-1.0, 0.5, 0.0],
+        ],
+        dtype=float,
+    )
+    directions = np.tile(np.array([0.0, 0.0, 1.0]), (len(origins), 1))
+
+    bundle, _scalar = assert_bundle_matches_scalar(system, origins, directions)
+
+    assert np.all(bundle["active"])
+
+
+def test_trace_bundle_matches_scalar_with_axicon_apex_fallback():
+    system = build_axicon_apex_fallback_system()
+    origins = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [-1.0, 0.5, 0.0],
+        ],
+        dtype=float,
+    )
+    directions = np.tile(np.array([0.0, 0.0, 1.0]), (len(origins), 1))
+
+    bundle, _scalar = assert_bundle_matches_scalar(system, origins, directions)
+
+    assert np.all(bundle["active"])
+
+
+def test_trace_bundle_matches_scalar_with_extra_data_fallback():
+    system = build_extra_data_without_derivative_fallback_system()
+    origins = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [-1.0, 0.5, 0.0],
+        ],
+        dtype=float,
+    )
+    directions = np.tile(np.array([0.0, 0.0, 1.0]), (len(origins), 1))
 
     bundle, _scalar = assert_bundle_matches_scalar(system, origins, directions)
 

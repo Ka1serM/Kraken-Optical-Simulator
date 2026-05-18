@@ -73,3 +73,4 @@
 | `Examp_Tel_2M_Spyder_Spot_RMS.py` | Advanced | Obscuration and RMS analysis | 2 m telescope spider RMS spot analysis. | - |
 | `Examp_Tel_2M_Wavefront_Fitting.py` | Advanced | Wavefront analysis | 2 m telescope wavefront fitting. | - |
 | `Examp_Tel_2M_Wavefront_Fitting_optimization.py` | Advanced | Wavefront optimization | 2 m telescope wavefront fitting with optimization. | - |
+| `Examp_Trace_Bundle_Experimental.py` | Advanced | Performance experiments | Experimental sequential ray-bundle comparison against scalar Trace. | - |

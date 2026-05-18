@@ -2168,3 +2168,65 @@ Add bundle normal scalar fallback
 - Cover Zernike axis, axicon apex, and ExtraData without derivative
 - Update the maintenance log
 ```
+
+### 2026-05-18 - Add Experimental Trace Bundle Example
+
+Goal:
+
+- Give users and maintainers a runnable example for the experimental sequential
+  ray-bundle tracer, including fallback cases where analytical derivatives are
+  singular or unavailable.
+
+Files changed:
+
+- `KrakenOS/Examples/Examp_Trace_Bundle_Experimental.py`
+- `KrakenOS/Examples/EXAMPLES_INDEX.md`
+- `tests/test_examples_subset.py`
+- `tests/test_trace_bundle.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added full `trace_bundle()` regression coverage for fallback cases:
+  - Zernike central ray;
+  - axicon apex ray;
+  - `ExtraData` user surface without analytical derivative.
+- Added a user-facing example that compares scalar `system.Trace()` against
+  experimental `trace_bundle()` for:
+  - a simple spherical lens using the vectorized path;
+  - Zernike, axicon, and user-surface fallback paths.
+- The example prints ray count, repetitions, active rays, scalar time, bundle
+  time, speedup, active-mask equality, final-hit error, and direction error.
+- Registered the example in the examples index and representative example test
+  subset.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\Examples\Examp_Trace_Bundle_Experimental.py
+python KrakenOS\Examples\Examp_Trace_Bundle_Experimental.py
+python -m pytest tests\test_trace_bundle.py -q
+python -m pytest tests\test_bundle_transforms.py tests\test_solvehit_bundle.py tests\test_internormal_bundle.py tests\test_trace_bundle.py tests\test_examples_subset.py -q
+```
+
+Expected result:
+
+- The simple-lens bundle example should match scalar Trace to near machine
+  precision and show a large speedup for repeated bundles.
+- Fallback examples should match scalar Trace while remaining honest about
+  their smaller speedup because individual singular rays still use scalar
+  fallback.
+- The representative examples test subset should continue to pass.
+
+Suggested commit:
+
+```text
+Add experimental trace bundle example
+```
+
+```text
+- Add trace_bundle example comparing scalar and bundle tracing
+- Cover Zernike, axicon, and ExtraData fallback cases in full trace tests
+- Register the example in the examples index and subset test
+- Update the maintenance log
+```

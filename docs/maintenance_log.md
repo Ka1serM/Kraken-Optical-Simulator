@@ -1114,3 +1114,90 @@ Add simple plane trace fast path
 - Add regression tests against the general solver path
 - Update the maintenance log
 ```
+
+### 2026-05-17 - Add Mixed Analytical Sag Derivatives
+
+Goal:
+
+- Use analytical sag derivatives when every active surface component can
+  provide them, while preserving the existing finite-difference fallback for
+  user-defined or sampled surfaces.
+
+Files changed:
+
+- `KrakenOS/MathShapesClass.py`
+- `KrakenOS/SurfClass.py`
+- `KrakenOS/HitOnSurf.py`
+- `tests/test_surface_analytic_derivatives.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added optional `derivative(x, y)` methods for:
+  - conic/spherical surfaces;
+  - polynomial aspheres;
+  - axicons, except at the singular apex;
+  - Zernike surfaces, following KrakenOS's existing `arctan2(x, y)`
+    convention.
+- Added optional derivative support for `ExtraData`:
+  - existing `ExtraData = [surface, coef]` keeps the numerical fallback;
+  - new `ExtraData = [surface, coef, derivative]` can return `(dzdx, dzdy)`.
+- Added `surf.sigma_derivative(x, y, case)` to sum derivative contributions in
+  the same order and with the same component stack used by `sigma_z()`.
+- Updated `Hit_Solver.SurfDer()` to use analytical derivatives for surface
+  normals when available.
+- Updated Newton line solving to use the chain-rule derivative
+  `dF/dz = dzdx * L/N + dzdy * M/N - 1` when available.
+- Kept the finite-difference path as the automatic fallback whenever any active
+  component cannot provide an analytical derivative.
+- Added scalar fast paths to avoid creating tiny NumPy arrays during ray-by-ray
+  tracing.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\MathShapesClass.py KrakenOS\SurfClass.py KrakenOS\HitOnSurf.py tests\test_surface_analytic_derivatives.py
+python -m pytest tests\test_surface_analytic_derivatives.py -q
+python -m pytest tests
+python -m pytest tests\test_trace_performance_components.py -s
+python tools\benchmark_parallel_trace.py --rays 1000 --workers 4
+```
+
+Result:
+
+- Full test suite collected 19 tests and all passed.
+- Analytical derivatives matched finite-difference slopes for conic,
+  aspheric, Zernike, and mixed surfaces.
+- Existing `ExtraData` without derivative remains compatible and uses the
+  numerical fallback.
+- A mixed traced surface using analytical derivatives matched the forced
+  finite-difference path.
+- Representative doublet counters for 1000 rays:
+  - `SurfaceShape` calls dropped from 7034 to 4876 after analytical Newton
+    derivatives.
+  - `SurfDer` calls remained at 2000, but those calls now use analytical
+    normals when possible.
+- `tests/test_trace_performance_components.py` reported:
+  - `trace_only=0.177311s`
+  - `trace_plus_minimal_extract=0.184357s`
+  - `trace_plus_raykeeper_push=0.207696s`
+- Parallel benchmark for 1000 rays and 4 workers reported:
+  - `sequential_warm=0.166525s`
+  - `parallel_warm_trace=0.106552s`
+  - `warm_speedup=1.563x`
+
+Suggested commit:
+
+```text
+Add mixed analytical sag derivatives
+```
+
+```text
+- Add analytical derivatives for conic, aspheric, axicon, and Zernike sag terms
+- Sum analytical derivative contributions through surf.sigma_derivative
+- Preserve finite-difference fallback for unsupported surface components
+- Allow optional user-provided ExtraData derivatives
+- Use analytical derivatives for normals and Newton line solving
+- Add derivative and trace regression tests
+- Update the maintenance log
+```

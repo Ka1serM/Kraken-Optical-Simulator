@@ -18,6 +18,9 @@ class extra__surf():
         """
         self.COEF = C[1]
         self.user_surface = C[0]
+        self.user_derivative = None
+        if len(C) > 2:
+            self.user_derivative = C[2]
 
     def calculate(self, x, y):
         """calculate.
@@ -31,6 +34,18 @@ class extra__surf():
         """
         Z = self.user_surface(x, y, self.COEF)
         return Z
+
+    def derivative(self, x, y):
+        """Return an optional user-provided sag derivative.
+
+        Existing ExtraData surfaces only provide ``calculate`` and therefore
+        keep using the numerical derivative fallback. Users who need analytic
+        performance can pass ``ExtraData = [surface, coef, derivative]`` where
+        derivative returns ``(dzdx, dzdy)``.
+        """
+        if self.user_derivative is None:
+            return None
+        return self.user_derivative(x, y, self.COEF)
 
 
 class aspheric__surf():
@@ -64,6 +79,21 @@ class aspheric__surf():
                 Z = (Z + (self.E[(i - 1)] * np.power(r, ((2.0 * i*1.0) * 1.0))))
 
         return Z
+
+    def derivative(self, x, y):
+        """Return the analytical derivative of the polynomial asphere sag."""
+        scalar_input = np.isscalar(x) and np.isscalar(y)
+        dzdx = 0.0 if scalar_input else 0.0 * np.zeros_like(x)
+        dzdy = 0.0 if scalar_input else 0.0 * np.zeros_like(y)
+        r2 = ((x * x) + (y * y))
+        for i in range(1, 9):
+            coef = self.E[(i - 1)]
+            if (coef != 0):
+                power = 2.0 * i
+                radial = np.power(r2, ((power - 2.0) / 2.0))
+                dzdx = dzdx + (coef * power * x * radial)
+                dzdy = dzdy + (coef * power * y * radial)
+        return dzdx, dzdy
 
 class conic__surf(object):
     """conic__surf.
@@ -109,6 +139,49 @@ class conic__surf(object):
 
         return z
 
+    def derivative(self, x, y):
+        """Return the analytical derivative of the conic sag.
+
+        The formula follows ``calculate`` exactly, including the historical
+        ``abs`` inside the square root. If the derivative is singular at the
+        conic limit, ``None`` is returned so the caller can use the established
+        finite-difference path.
+        """
+        if (self.R_C == 0.0):
+            return 0.0 * np.zeros_like(x), 0.0 * np.zeros_like(y)
+
+        c = (1.0 / self.R_C)
+        q = self.C_RXY_RATIO
+        s2 = ((x * x) + ((y * q) * (y * q)))
+        root_arg = (1.0 - (((self.KON + 1.0) * c * c) * s2))
+
+        if np.isscalar(root_arg):
+            root = math.sqrt(abs(root_arg))
+            if root == 0:
+                return None
+            root_sign = 1.0 if root_arg > 0 else -1.0
+            droot_ds2 = ((- (self.KON + 1.0) * c * c * root_sign) / (2.0 * root))
+            dz_ds2 = (c / (1.0 + root)) - ((c * s2 * droot_ds2) / ((1.0 + root) ** 2.0))
+            dzdx = dz_ds2 * 2.0 * x
+            dzdy = dz_ds2 * 2.0 * y * (q * q)
+            return dzdx, dzdy
+
+        x = np.asarray(x)
+        y = np.asarray(y)
+        root_abs = np.abs(root_arg)
+        root = np.sqrt(root_abs)
+
+        if np.any(root == 0):
+            return None
+
+        root_sign = np.sign(root_arg)
+        droot_ds2 = ((- (self.KON + 1.0) * c * c * root_sign) / (2.0 * root))
+        dz_ds2 = (c / (1.0 + root)) - ((c * s2 * droot_ds2) / ((1.0 + root) ** 2.0))
+
+        dzdx = dz_ds2 * 2.0 * x
+        dzdy = dz_ds2 * 2.0 * y * (q * q)
+        return dzdx, dzdy
+
 
 
 class axicon__surf():
@@ -146,6 +219,35 @@ class axicon__surf():
             z_axicon = 0.0 * np.zeros_like(x)
 
         return z_axicon
+
+    def derivative(self, x, y):
+        """Return the analytical derivative of the axicon sag.
+
+        The axicon apex is singular. At exactly ``r=0`` the method returns
+        ``None`` so callers preserve the previous numerical behavior.
+        """
+        if (self.AXC == 0.0):
+            return 0.0 * np.zeros_like(x), 0.0 * np.zeros_like(y)
+
+        q = self.C_RXY_RATIO
+        s = np.sqrt(((x * x) + ((y * q) * (y * q))))
+        if np.isscalar(s):
+            if s == 0:
+                return None
+            slope = math.tan(math.radians(self.AXC))
+            dzdx = slope * (x / s)
+            dzdy = slope * ((y * q * q) / s)
+            return dzdx, dzdy
+
+        x = np.asarray(x)
+        y = np.asarray(y)
+        if np.any(s == 0):
+            return None
+
+        slope = np.tan(np.deg2rad(self.AXC))
+        dzdx = slope * (x / s)
+        dzdy = slope * ((y * q * q) / s)
+        return dzdx, dzdy
 
 
 class error_map__surf():
@@ -260,6 +362,100 @@ class zernike__surf():
         ZSP = CalculateZern(x, y, self.Z_POL, self.Z_POW, self.COEF, self.DMTR)
         return ZSP
 
+    def derivative(self, x, y):
+        """Return the analytical derivative of KrakenOS Zernike sag terms.
+
+        KrakenOS uses ``theta = arctan2(x, y)`` in ``CalculateZern``. The
+        derivative intentionally follows that same convention, rather than the
+        more common ``arctan2(y, x)``, so analytical and numerical slopes refer
+        to the same surface definition. At the exact origin the angular
+        derivative is singular, so this method returns ``None`` and lets the
+        caller use finite differences.
+        """
+        radius = np.sqrt(((x * x) + (y * y)))
+        if np.isscalar(radius):
+            if radius == 0:
+                return None
+            return self._derivative_scalar(x, y, radius)
+
+        x = np.asarray(x)
+        y = np.asarray(y)
+        if np.any(radius == 0):
+            return None
+
+        norm_radius = (self.DMTR / 2.0)
+        ro = radius / norm_radius
+        theta = np.arctan2(x, y)
+        dro_dx = x / (norm_radius * radius)
+        dro_dy = y / (norm_radius * radius)
+        dtheta_dx = y / (radius * radius)
+        dtheta_dy = -x / (radius * radius)
+
+        dzdx = 0.0 * np.zeros_like(x)
+        dzdy = 0.0 * np.zeros_like(y)
+
+        for term in range(0, self.COEF.shape[0]):
+            coef = self.COEF[term]
+            if (coef != 0):
+                (j, n, m, par, raiz) = self.Z_POL[term]
+                radial, radial_der = zernike_radial_and_derivative(ro, self.Z_POW[term])
+
+                if (par == 1):
+                    dterm_dro = raiz * radial_der
+                    dterm_dtheta = 0.0
+                elif (par == 3):
+                    trig = np.cos((m * theta))
+                    dterm_dro = raiz * radial_der * trig
+                    dterm_dtheta = -raiz * radial * m * np.sin((m * theta))
+                elif (par == 2):
+                    trig = np.sin((m * theta))
+                    dterm_dro = raiz * radial_der * trig
+                    dterm_dtheta = raiz * radial * m * np.cos((m * theta))
+                else:
+                    return None
+
+                dzdx = dzdx + coef * ((dterm_dro * dro_dx) + (dterm_dtheta * dtheta_dx))
+                dzdy = dzdy + coef * ((dterm_dro * dro_dy) + (dterm_dtheta * dtheta_dy))
+
+        return dzdx, dzdy
+
+    def _derivative_scalar(self, x, y, radius):
+        norm_radius = (self.DMTR / 2.0)
+        ro = radius / norm_radius
+        theta = math.atan2(x, y)
+        dro_dx = x / (norm_radius * radius)
+        dro_dy = y / (norm_radius * radius)
+        dtheta_dx = y / (radius * radius)
+        dtheta_dy = -x / (radius * radius)
+
+        dzdx = 0.0
+        dzdy = 0.0
+
+        for term in range(0, self.COEF.shape[0]):
+            coef = self.COEF[term]
+            if (coef != 0):
+                (j, n, m, par, raiz) = self.Z_POL[term]
+                radial, radial_der = zernike_radial_and_derivative(ro, self.Z_POW[term])
+
+                if (par == 1):
+                    dterm_dro = raiz * radial_der
+                    dterm_dtheta = 0.0
+                elif (par == 3):
+                    trig = math.cos((m * theta))
+                    dterm_dro = raiz * radial_der * trig
+                    dterm_dtheta = -raiz * radial * m * math.sin((m * theta))
+                elif (par == 2):
+                    trig = math.sin((m * theta))
+                    dterm_dro = raiz * radial_der * trig
+                    dterm_dtheta = raiz * radial * m * math.cos((m * theta))
+                else:
+                    return None
+
+                dzdx = dzdx + coef * ((dterm_dro * dro_dx) + (dterm_dtheta * dtheta_dx))
+                dzdy = dzdy + coef * ((dterm_dro * dro_dy) + (dterm_dtheta * dtheta_dy))
+
+        return dzdx, dzdy
+
 def CalculateZern( x, y, Z_POL, Z_POW, COEF, DMTR):
     """calculate.
 
@@ -309,6 +505,18 @@ def zernike_polynomials(term, ro, theta, Zern_pol, z_pow):
     if (par == 2):
         S = ((raiz * NR) * np.sin((m * theta)))
     return S
+
+def zernike_radial_and_derivative(ro, z_pow):
+    """Return a Zernike radial polynomial and d(radial)/d(ro)."""
+    ct = z_pow[0]
+    pot = z_pow[1]
+    radial = 0
+    radial_der = 0
+    for i in range(0, len(ct)):
+        radial = ((ct[i] * np.power(ro, pot[i])) + radial)
+        if (pot[i] != 0):
+            radial_der = ((ct[i] * pot[i] * np.power(ro, (pot[i] - 1))) + radial_der)
+    return radial, radial_der
 
 def z_parity(num):
     """z_parity.

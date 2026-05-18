@@ -81,6 +81,16 @@ class Hit_Solver():
         z :
             z
         """
+        derivative = self.SDT[self.vj].sigma_derivative(x, y, self.SuTo.ErrSurfCase)
+        if derivative is not None:
+            # For analytical sag derivatives, the implicit surface is
+            # F(x, y, z) = sag(x, y) - z. Its gradient is therefore
+            # (dz/dx, dz/dy, -1), matching the orientation produced by the
+            # historical finite-difference branch below.
+            (Dx, Dy) = derivative
+            Dz = -1.0
+            Dr = np.sqrt((((Dx ** 2.) + (Dy ** 2.)) + (Dz ** 2.)))
+            return ((Dx / Dr), (Dy / Dr), (Dz / Dr))
 
 
         Ndelta = self.SDT[self.vj].PresicionPrecal
@@ -170,6 +180,35 @@ class Hit_Solver():
     #     Dr=np.sqrt((Dx*Dx)+(Dy*Dy)+(Dz*Dz))
     #     return Dx/Dr,Dy/Dr,Dz/Dr
 
+    def __DerLineCurveAnalytic(self, gf):
+        """Return Newton line derivative from analytical sag derivatives.
+
+        Along the ray line, x and y vary with z as:
+
+            x(z) = x0 + (z - z0) * L/N
+            y(z) = y0 + (z - z0) * M/N
+
+        For F(z) = sag(x(z), y(z)) - z, the chain rule gives:
+
+            dF/dz = dzdx * L/N + dzdy * M/N - 1
+
+        If the active surface stack cannot provide a complete analytical
+        derivative, ``None`` is returned and the finite-difference line
+        derivative is used instead.
+        """
+        kl = gf - self.NP_z1
+        X = ((kl * self.LN) + self.NP_x1)
+        Y = ((kl * self.MN) + self.NP_y1)
+        derivative = self.SDT[self.vj].sigma_derivative(X, Y, self.SuTo.ErrSurfCase)
+        if derivative is None:
+            return None
+
+        (dzdx, dzdy) = derivative
+        SP = self.SuTo.SurfaceShape(X, Y, self.vj)
+        FdeX = (SP - gf)
+        DerFdeX = ((dzdx * self.LN) + (dzdy * self.MN) - 1.0)
+        return DerFdeX, FdeX
+
     def __DerLineCurve(self, gf):
         """__DerLineCurve.
 
@@ -178,6 +217,10 @@ class Hit_Solver():
         gf :
             gf
         """
+        analytic = self.__DerLineCurveAnalytic(gf)
+        if analytic is not None:
+            return analytic
+
         self.Parray[0]= gf + self.deltaLineCurve
         self.Parray[1]= gf
         self.Parray[2]= gf - self.deltaLineCurve

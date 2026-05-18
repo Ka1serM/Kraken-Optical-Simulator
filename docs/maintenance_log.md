@@ -2000,3 +2000,51 @@ Expand TraceBundle coverage
 - Match scalar mirror propagation sign and post-physics refractive index handling
 - Update the maintenance log
 ```
+
+### 2026-05-18 - Document Bundle Derivative Limits In Tests
+
+Goal:
+
+- Make the current experimental `BundleTrace` derivative requirements explicit
+  before adding numerical fallback behavior.
+
+Files changed:
+
+- `tests/test_solvehit_bundle.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added tests requiring clear `RuntimeError` behavior when bundle intersection
+  cannot obtain analytical derivatives.
+- Covered known singular/unsupported cases:
+  - Zernike terms with a ray at the optical axis (`r = 0`);
+  - axicon apex ray;
+  - `ExtraData` without a user-provided derivative.
+- Did not implement fallback behavior yet. These tests document the current
+  boundary so future fallback work can be deliberate and easy to review.
+
+Verification:
+
+```powershell
+python -m pytest tests\test_solvehit_bundle.py -q
+```
+
+Expected result:
+
+- Existing bundle intersection tests should continue to pass.
+- Unsupported derivative cases should fail with a clear message rather than a
+  silent numerical mismatch.
+
+Suggested commit:
+
+```text
+Document BundleTrace derivative limits
+```
+
+```text
+- Add tests for BundleTrace derivative-limit errors
+- Cover Zernike axis, axicon apex, and ExtraData without derivative
+- Keep fallback behavior deferred for a focused follow-up
+- Update the maintenance log
+```

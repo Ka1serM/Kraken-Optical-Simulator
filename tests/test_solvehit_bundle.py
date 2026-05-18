@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from KrakenOS.BundleTrace import aperture_active_mask, solve_hit_bundle
 
@@ -96,3 +97,64 @@ def test_bundle_aperture_mask_preserves_ray_order():
 
     assert active.tolist() == [False, True, True, True, True, True, False]
     assert len(active) == len(x)
+
+
+def test_solve_hit_bundle_reports_zernike_axis_derivative_limit():
+    import KrakenOS as Kos
+
+    surface = Kos.surf()
+    surface.Diameter = 30.0
+    surface.ZNK = np.zeros(36)
+    surface.ZNK[2] = 0.007
+    surface.build_surface_function()
+
+    px1 = np.array([0.0, 1.0])
+    py1 = np.array([0.0, 1.0])
+    pz1 = np.zeros_like(px1)
+    l = np.zeros_like(px1)
+    m = np.zeros_like(px1)
+    n = np.ones_like(px1)
+
+    with pytest.raises(RuntimeError, match="analytical derivatives"):
+        solve_hit_bundle(surface, px1, py1, pz1, l, m, n)
+
+
+def test_solve_hit_bundle_reports_axicon_apex_derivative_limit():
+    import KrakenOS as Kos
+
+    surface = Kos.surf()
+    surface.Diameter = 30.0
+    surface.Axicon = 2.0
+    surface.build_surface_function()
+
+    px1 = np.array([0.0, 1.0])
+    py1 = np.array([0.0, 1.0])
+    pz1 = np.zeros_like(px1)
+    l = np.zeros_like(px1)
+    m = np.zeros_like(px1)
+    n = np.ones_like(px1)
+
+    with pytest.raises(RuntimeError, match="analytical derivatives"):
+        solve_hit_bundle(surface, px1, py1, pz1, l, m, n)
+
+
+def test_solve_hit_bundle_reports_extra_data_without_derivative_limit():
+    import KrakenOS as Kos
+
+    def user_surface(x, y, data):
+        return data[0] * x * y
+
+    surface = Kos.surf()
+    surface.Diameter = 30.0
+    surface.ExtraData = [user_surface, [0.25]]
+    surface.build_surface_function()
+
+    px1 = np.array([1.0, 2.0])
+    py1 = np.array([1.0, 2.0])
+    pz1 = np.zeros_like(px1)
+    l = np.zeros_like(px1)
+    m = np.zeros_like(px1)
+    n = np.ones_like(px1)
+
+    with pytest.raises(RuntimeError, match="analytical derivatives"):
+        solve_hit_bundle(surface, px1, py1, pz1, l, m, n)

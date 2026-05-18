@@ -1485,3 +1485,56 @@ Protect vectorized surface derivatives
 - Cover conic, asphere, Zernike, and axicon derivative paths
 - Update the maintenance log
 ```
+
+### 2026-05-17 - Prototype Vectorized SolveHit In Tests
+
+Goal:
+
+- Explore a bundle-style Newton ray-surface intersection solver without
+  changing KrakenOS' current scalar `Trace()` implementation.
+
+Files changed:
+
+- `tests/test_solvehit_bundle.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a test-local `solve_hit_bundle()` prototype that evaluates many
+  ray-surface intersections at once using vector `numpy` arrays.
+- Kept the prototype outside the KrakenOS package so the public API and scalar
+  tracing behavior remain untouched.
+- Compared the bundle solver against the existing scalar `Hit_Solver.SolveHit`
+  for:
+  - a simple plane;
+  - a parabolic/conic surface;
+  - a mixed conic/asphere/Zernike surface.
+- Used the same Newton equation as the scalar solver:
+  `F(z) = sag(x(z), y(z)) - z`.
+- Used the analytical line derivative:
+  `dF/dz = dzdx * L/N + dzdy * M/N - 1`.
+
+Verification:
+
+```powershell
+python -m pytest tests\test_solvehit_bundle.py -q
+```
+
+Result:
+
+- All bundle intersection prototype tests passed.
+- The prototype matched the scalar solver within tight numerical tolerances.
+
+Suggested commit:
+
+```text
+Prototype vectorized SolveHit in tests
+```
+
+```text
+- Add a test-local vectorized Newton intersection prototype
+- Compare bundle SolveHit results against the scalar solver
+- Cover plane, parabolic, and mixed conic/asphere/Zernike surfaces
+- Keep the prototype outside the KrakenOS public API
+- Update the maintenance log
+```

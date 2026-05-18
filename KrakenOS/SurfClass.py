@@ -356,41 +356,6 @@ class surf():
 
         return Z
 
-    def sigma_derivative(self, x, y, case):
-        """Return the analytical derivative of the summed surface sag.
-
-        KrakenOS defines a surface sag as the sum of all active surface
-        functions in ``SURF_FUNC``.  The analytical derivative follows the same
-        rule: each available ``derivative`` contribution is added.  If any
-        active surface function cannot provide a derivative, ``None`` is
-        returned and the caller must use the historical finite-difference
-        derivative.  This preserves compatibility with existing user-defined
-        ``ExtraData`` surfaces and sampled error maps.
-        """
-        x = (x + self.ShiftX)
-        y = (y + self.ShiftY)
-
-        scalar_input = np.isscalar(x) and np.isscalar(y)
-        dzdx = 0.0 if scalar_input else 0.0 * np.zeros_like(x)
-        dzdy = 0.0 if scalar_input else 0.0 * np.zeros_like(y)
-        N_FUNC = len(self.SURF_FUNC)
-
-        for i in range(0, (N_FUNC - case)):
-            surface_function = self.SURF_FUNC[i]
-            if not hasattr(surface_function, "derivative"):
-                return None
-
-            derivative = surface_function.derivative(x, y)
-            if derivative is None:
-                return None
-
-            (fx, fy) = derivative
-            dzdx = dzdx + fx
-            dzdy = dzdy + fy
-
-        return dzdx, dzdy
-
-
     def update(self):
         """update.
         """

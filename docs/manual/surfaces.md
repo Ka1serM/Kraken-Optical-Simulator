@@ -59,13 +59,12 @@ create behavior that is not represented by a simple spherical radius.
 User-defined surface shapes allow KrakenOS to represent structured optical
 surfaces, such as micro-lens arrays or other sampled/analytical profiles.
 
-## Analytical and Numerical Surface Derivatives
+## Numerical Surface Derivatives
 
 KrakenOS uses surface derivatives to compute local surface normals and to solve
-ray-surface intersections. Current KrakenOS can mix two derivative strategies:
-
-- analytical derivatives when the active surface terms support them;
-- numerical finite-difference derivatives as a compatibility fallback.
+ray-surface intersections. The public KrakenOS trace path uses numerical
+finite-difference derivatives for ordinary sequential tracing and for
+user-defined or sampled surfaces.
 
 This is transparent to normal tracing code. Users still call:
 
@@ -73,51 +72,27 @@ This is transparent to normal tracing code. Users still call:
 system.Trace(origin, direction, wavelength)
 ```
 
-Analytical derivatives are currently available for ordinary planes,
-conic/spherical/parabolic surfaces, polynomial aspheres, Zernike sag terms, and
-axicons away from the singular apex. When these terms are combined on the same
-`surf`, KrakenOS sums their sag values and also sums their derivative
-contributions. This matches the existing surface model:
+Surface sag terms are still additive. For example, when conic, aspheric,
+Zernike, axicon, `ExtraData`, or error-map terms are combined on one `surf`,
+KrakenOS evaluates the total surface as:
 
 ```text
 Ztotal = Zconic + Zasphere + Zzernike + Zaxicon + ...
-dZtotal/dx = dZconic/dx + dZasphere/dx + dZzernike/dx + dZaxicon/dx + ...
-dZtotal/dy = dZconic/dy + dZasphere/dy + dZzernike/dy + dZaxicon/dy + ...
 ```
 
-If any active surface component cannot provide an analytical derivative,
-KrakenOS keeps the previous numerical derivative behavior for that surface. This
-preserves compatibility with existing user-defined `ExtraData` surfaces,
-sampled `Error_map` surfaces, and singular points where an analytical derivative
-is not well defined.
+The derivative used by the solver is sampled numerically from that same total
+surface. This keeps the public behavior consistent for built-in terms,
+user-defined `ExtraData` profiles, sampled `Error_map` profiles, masks, and
+other mixed surfaces.
 
-For user-defined `ExtraData`, the classic form remains valid:
+For user-defined `ExtraData`, use the classic form:
 
 ```python
 surface.ExtraData = [sag_function, coefficients]
 ```
 
-An optional derivative function can be provided when available:
-
-```python
-surface.ExtraData = [sag_function, coefficients, derivative_function]
-```
-
-The derivative function receives the same `(x, y, coefficients)` inputs and must
-return `(dzdx, dzdy)`. If it is omitted, KrakenOS uses the numerical fallback.
-
-Recommended examples:
-
-- [`Examp_ExtraShape_With_Derivative.py`](../../KrakenOS/Examples/Examp_ExtraShape_With_Derivative.py)
-- [`Examp_ParaboleMirror_Derivative_Comparison.py`](../../KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py)
-
-The parabolic mirror comparison is intentionally a near-perfect test case. A
-parabola should focus a collimated bundle to a point in the ideal model, so the
-remaining spot is mostly a numerical residual from floating-point arithmetic,
-coordinate transformations, intersection tolerance, and ray-data projection.
-Visible stripes or bands in that example occur only because the plot is zoomed
-to femtometer-scale residuals. They should be read as the numerical floor of
-the calculation, not as a physical aberration.
+Higher-performance analytical derivative experiments are developed separately
+in KrakenCore and are not part of the public KrakenOS API.
 
 ## Reserved Materials
 
@@ -138,5 +113,3 @@ Recommended examples:
 - [`Examp_Doublet_Lens_Cylinder.py`](../../KrakenOS/Examples/Examp_Doublet_Lens_Cylinder.py)
 - [`Examp_Axicon.py`](../../KrakenOS/Examples/Examp_Axicon.py)
 - [`Examp_ExtraShape_XY_Cosines.py`](../../KrakenOS/Examples/Examp_ExtraShape_XY_Cosines.py)
-- [`Examp_ExtraShape_With_Derivative.py`](../../KrakenOS/Examples/Examp_ExtraShape_With_Derivative.py)
-- [`Examp_ParaboleMirror_Derivative_Comparison.py`](../../KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py)

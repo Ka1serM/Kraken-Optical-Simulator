@@ -9,9 +9,7 @@ EXAMPLES = [
     "Examp_Doublet_Lens_Cylinder.py",
     "Examp_Doublet_Lens_NonSec.py",
     "Examp_Doublet_Lens_Tilt_non_sec.py",
-    "Examp_ExtraShape_With_Derivative.py",
     "Examp_ExtraShape_XY_Cosines_UDA.py",
-    "Examp_ParaboleMirror_Derivative_Comparison.py",
     "Examp_Tel_2M_Spyder_Spot_Diagram.py",
     "Examp_Prism_STL.py",
 ]

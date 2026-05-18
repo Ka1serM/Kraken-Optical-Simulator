@@ -26,8 +26,6 @@ root.
 | Work with axicons | [`Examp_Axicon.py`](../KrakenOS/Examples/Examp_Axicon.py) |
 | Combine axicon and cylinder behavior | [`Examp_Axicon_And_Cylinder.py`](../KrakenOS/Examples/Examp_Axicon_And_Cylinder.py) |
 | Use a user-defined surface | [`Examp_ExtraShape_XY_Cosines.py`](../KrakenOS/Examples/Examp_ExtraShape_XY_Cosines.py) |
-| Add an analytical derivative to a user-defined surface | [`Examp_ExtraShape_With_Derivative.py`](../KrakenOS/Examples/Examp_ExtraShape_With_Derivative.py) |
-| Compare analytical and numerical derivative image quality | [`Examp_ParaboleMirror_Derivative_Comparison.py`](../KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py) |
 | Use user-defined apertures or masks | [`Examp_ParaboleMirror_Shift_UDA.py`](../KrakenOS/Examples/Examp_ParaboleMirror_Shift_UDA.py) |
 | Use faceted user-defined surfaces | [`Examp_ExtraShape_UserFacets.py`](../KrakenOS/Examples/Examp_ExtraShape_UserFacets.py) |
 | Trace non-sequential rays | [`Examp_Doublet_Lens_NonSec.py`](../KrakenOS/Examples/Examp_Doublet_Lens_NonSec.py) |

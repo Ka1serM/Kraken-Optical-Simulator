@@ -28,7 +28,6 @@
 | `Examp_ExtraShape_Micro_Lens_Array.py` | Advanced | Custom surface shape | Micro-lens array extra shape. | - |
 | `Examp_ExtraShape_Radial_Sine.py` | Intermediate | Custom surface shape | Radial sine extra shape. | - |
 | `Examp_ExtraShape_UserFacets.py` | Advanced | Custom surface shape | Faceted user-defined surface. | - |
-| `Examp_ExtraShape_With_Derivative.py` | Intermediate | Custom surface shape | User-defined ExtraData surface with optional analytical derivative. | - |
 | `Examp_ExtraShape_XY_Cosines.py` | Intermediate | Custom surface shape | XY cosine extra shape. | - |
 | `Examp_ExtraShape_XY_Cosines_UDA.py` | Advanced | Custom surface shape | XY cosine surface with user-defined aperture. | - |
 | `Examp_Flat_Mirror_45Deg.py` | Beginner | Mirror tracing | Flat fold mirror at 45 degrees. | - |
@@ -37,7 +36,6 @@
 | `Examp_Glass_Catalog_Order.py` | Beginner | Catalog configuration | Glass catalog loading order. | - |
 | `Examp_Lens_Catalog_Basics.py` | Beginner | Lens catalogs | Basic Zemax-style lens catalog loading. | THORLABS.ZMF |
 | `Examp_Metal_Mirror_Energy.py` | Beginner | Metal coatings | Metal mirror reflection and transmission terms. | Gold.csv |
-| `Examp_ParaboleMirror_Derivative_Comparison.py` | Intermediate | Mirror tracing | Shifted parabolic mirror spot comparison with analytical and numerical derivatives. | - |
 | `Examp_ParaboleMirror_Shift.py` | Intermediate | Mirror tracing | Shifted parabolic mirror. | - |
 | `Examp_ParaboleMirror_Shift_UDA.py` | Advanced | Mirror tracing | Shifted parabolic mirror with user-defined aperture. | - |
 | `Examp_Perfect_lens.py` | Beginner | Idealized lens | Ideal thin-lens element. | - |

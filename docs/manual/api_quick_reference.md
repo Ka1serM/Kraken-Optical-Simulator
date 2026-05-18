@@ -30,22 +30,18 @@ Common attributes:
 | `Diff_Ord`, `Grating_D`, `Grating_Angle` | Grating behavior. |
 | `ZNK` | Zernike surface terms. |
 | `AspherData` | Polynomial aspheric sag terms. |
-| `ExtraData` | User-defined sag function, optionally with analytical derivative. |
+| `ExtraData` | User-defined sag function and coefficients. |
 | `Solid_3d_stl` | STL geometry path. |
 | `Coating`, `CoatingMet` | Dielectric or metallic coating data. |
 
 Surface derivative behavior:
 
-- KrakenOS uses analytical sag derivatives when every active surface term can
-  provide one.
-- Analytical derivatives are available for planes, conic/spherical/parabolic
-  surfaces, polynomial aspheres, Zernike sag terms, and axicons away from the
-  singular apex.
-- If a surface includes a component without derivative support, KrakenOS uses
-  the historical finite-difference derivative fallback.
-- Existing user-defined surfaces remain valid with `ExtraData = [f, coef]`.
-- Users can opt into analytical derivatives with
-  `ExtraData = [f, coef, df]`, where `df(x, y, coef)` returns `(dzdx, dzdy)`.
+- The public KrakenOS trace path uses numerical finite-difference derivatives
+  for surface normals and ray-surface intersection solving.
+- User-defined surfaces use `ExtraData = [f, coef]`, where `f(x, y, coef)`
+  returns the sag value.
+- Higher-performance analytical derivative experiments are developed
+  separately in KrakenCore and are not part of the public KrakenOS API.
 
 ## `Kos.system`
 

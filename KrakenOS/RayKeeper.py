@@ -191,6 +191,14 @@ class raykeeper():
         for result in results:
             self.push_result(result)
 
+    def extend_bundle_result(self, bundle_result, wavelength=None):
+        """Store a history-enabled experimental bundle trace result."""
+        from .BundleTrace import bundle_to_raykeeper_results
+
+        self.extend_results(
+            bundle_to_raykeeper_results(self.SYSTEM, bundle_result, wavelength)
+        )
+
     def clean(self):
         """clean.
         """

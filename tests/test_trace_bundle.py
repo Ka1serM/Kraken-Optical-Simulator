@@ -410,3 +410,36 @@ def test_trace_bundle_matches_scalar_for_flat_mirror():
     bundle, _scalar = assert_bundle_matches_scalar(system, origins, directions)
 
     assert np.all(bundle["active"])
+
+
+def test_history_enabled_trace_bundle_can_fill_raykeeper():
+    import KrakenOS as Kos
+
+    scalar_system = build_simple_lens_system()
+    bundle_system = build_simple_lens_system()
+    origins, directions = make_default_rays()
+    wavelength = 0.55
+
+    scalar = scalar_trace_results(scalar_system, origins, directions, wavelength)
+    bundle = trace_bundle(bundle_system, origins, directions, wavelength, keep_history=True)
+
+    rays = Kos.raykeeper(bundle_system)
+    rays.extend_bundle_result(bundle, wavelength)
+
+    x, y, z, l, m, n = rays.pick(-1)
+    active = scalar["active"]
+
+    assert rays.nrays == len(origins)
+    assert np.array_equal(bundle["active"], active)
+    assert np.allclose(
+        np.column_stack([x, y, z]),
+        scalar["final_hits"][active],
+        rtol=1e-8,
+        atol=1e-8,
+    )
+    assert np.allclose(
+        np.column_stack([l, m, n]),
+        scalar["final_directions"][active],
+        rtol=1e-8,
+        atol=1e-8,
+    )

@@ -17,7 +17,7 @@ Still limited in this first experimental module:
 - STL and non-sequential tracing;
 - UDA/mask geometry beyond the simple circular aperture contract;
 - fully vectorized numerical derivative fallback for bundle normals;
-- raykeeper integration.
+- complete coating/energy bookkeeping for reconstructed raykeeper records.
 """
 
 import numpy as np
@@ -290,10 +290,12 @@ def snell_refraction_bundle(incident, normals, n1, n2):
     return transmitted, np.abs(n2_effective), sign, angles
 
 
-def trace_bundle(system, origins, directions, wavelength):
+def trace_bundle(system, origins, directions, wavelength, keep_history=False):
     """Trace a bundle through a simple sequential system.
 
     This is experimental and intentionally narrower than ``system.Trace``.
+    Set ``keep_history=True`` when the result will be converted into
+    ``raykeeper`` records for display or analysis.
     """
 
     system.Wave = wavelength
@@ -307,18 +309,37 @@ def trace_bundle(system, origins, directions, wavelength):
     final_hits = np.array(ray_origins, copy=True)
     final_directions = np.array(ray_directions, copy=True)
 
+    if keep_history:
+        ray_count = ray_origins.shape[0]
+        global_hits = np.zeros((ray_count, system.n, 3), dtype=float)
+        local_hits = np.zeros((ray_count, system.n, 3), dtype=float)
+        incident_directions = np.zeros((ray_count, system.n - 1, 3), dtype=float)
+        output_directions = np.zeros((ray_count, system.n - 1, 3), dtype=float)
+        local_directions = np.zeros((ray_count, system.n - 1, 3), dtype=float)
+        normals = np.zeros((ray_count, system.n - 1, 3), dtype=float)
+        global_hits[:, 0, :] = ray_origins
+
     for surface_index in range(1, system.n):
         stops = ray_origins + (ray_directions * 999999999.9 * propagation_sign[:, None])
-        hit_active, hits, normals, _local_hits, _local_directions = inter_normal_bundle(
+        hit_active, hits, normal_vectors, hit_local, direction_local = inter_normal_bundle(
             system, ray_origins, stops, surface_index
         )
         active = active & hit_active
 
         current_n = system.N_Prec[surface_index]
         next_directions, current_after_physics, sign, _angles = snell_refraction_bundle(
-            ray_directions, normals, previous_n, current_n
+            ray_directions, normal_vectors, previous_n, current_n
         )
         propagation_sign = propagation_sign * sign
+
+        if keep_history:
+            history_index = surface_index - 1
+            global_hits[:, surface_index, :] = hits
+            local_hits[:, surface_index, :] = hit_local
+            incident_directions[:, history_index, :] = ray_directions
+            output_directions[:, history_index, :] = next_directions
+            local_directions[:, history_index, :] = direction_local
+            normals[:, history_index, :] = normal_vectors
 
         ray_origins[active] = hits[active]
         ray_directions[active] = next_directions[active]
@@ -326,8 +347,100 @@ def trace_bundle(system, origins, directions, wavelength):
         final_directions[active] = next_directions[active]
         previous_n = current_after_physics[0]
 
-    return {
+    result = {
         "active": active,
         "final_hits": final_hits,
         "final_directions": final_directions,
     }
+    if keep_history:
+        result.update(
+            {
+                "wavelength": wavelength,
+                "global_hits": global_hits,
+                "local_hits": local_hits,
+                "incident_directions": incident_directions,
+                "output_directions": output_directions,
+                "local_directions": local_directions,
+                "normals": normals,
+            }
+        )
+    return result
+
+
+def bundle_to_raykeeper_results(system, bundle_result, wavelength=None):
+    """Convert a history-enabled bundle result into raykeeper result records.
+
+    The conversion is intentionally conservative.  It reconstructs the spatial
+    ray path and direction data needed by ``raykeeper.pick`` and display tools,
+    while filling coating/energy terms with neutral values until the bundled
+    tracer grows full coating bookkeeping.
+    """
+
+    if "global_hits" not in bundle_result:
+        raise ValueError("trace_bundle(..., keep_history=True) is required")
+
+    wave = bundle_result.get("wavelength", wavelength)
+    if wave is None:
+        wave = system.Wave
+
+    global_hits = bundle_result["global_hits"]
+    local_hits = bundle_result["local_hits"]
+    incident_directions = bundle_result["incident_directions"]
+    output_directions = bundle_result["output_directions"]
+    local_directions = bundle_result["local_directions"]
+    normals = bundle_result["normals"]
+    active = bundle_result["active"]
+
+    surfaces = list(range(1, system.n))
+    names = [system.SDT[index].Name for index in surfaces]
+    glasses = [system.SDT[index].Glass for index in surfaces]
+    n0_values = [system.N_Prec[index - 1] for index in surfaces]
+    n1_values = [system.N_Prec[index] for index in surfaces]
+
+    results = []
+    for ray_index in range(global_hits.shape[0]):
+        starts = global_hits[ray_index, :-1, :]
+        stops = global_hits[ray_index, 1:, :]
+        distance = np.linalg.norm(stops - starts, axis=1)
+        optical_path = distance * np.asarray(n1_values, dtype=float)
+        top_s = np.cumsum(optical_path)
+        total_path = top_s[-1] if len(top_s) else 0.0
+
+        results.append(
+            {
+                "nelements": system.n,
+                "val": int(active[ray_index]),
+                "Wave": wave,
+                "ray_SurfHits": np.asarray(global_hits[ray_index]),
+                "SURFACE": surfaces,
+                "NAME": names,
+                "GLASS": glasses,
+                "S_XYZ": list(starts),
+                "T_XYZ": list(stops),
+                "XYZ": list(global_hits[ray_index]),
+                "OST_XYZ": list(local_hits[ray_index]),
+                "OST_LMN": list(local_directions[ray_index]),
+                "S_LMN": list(normals[ray_index]),
+                "LMN": list(incident_directions[ray_index]),
+                "R_LMN": list(output_directions[ray_index]),
+                "N0": n0_values,
+                "N1": n1_values,
+                "WAV": wave,
+                "G_LMN": [np.asarray([0, 1, 0])] * (system.n - 1),
+                "ORDER": [0.0] * (system.n - 1),
+                "GRATING": [0.0] * (system.n - 1),
+                "DISTANCE": list(distance),
+                "OP": list(optical_path),
+                "TOP_S": list(top_s),
+                "TOP": total_path,
+                "ALPHA": [0.0] * (system.n + 1),
+                "BULK_TRANS": [1.0] * (system.n - 1),
+                "RP": [0.0] * (system.n - 1),
+                "RS": [0.0] * (system.n - 1),
+                "TP": [1.0] * (system.n - 1),
+                "TS": [1.0] * (system.n - 1),
+                "TTBE": [1.0] * (system.n - 1),
+                "TT": 1.0,
+            }
+        )
+    return results

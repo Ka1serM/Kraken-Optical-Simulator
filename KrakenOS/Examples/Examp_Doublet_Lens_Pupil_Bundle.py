@@ -152,9 +152,9 @@ def scalar_trace(system, origins, directions, wavelength):
     }
 
 
-def bundle_trace(system, origins, directions, wavelength):
+def bundle_trace(system, origins, directions, wavelength, keep_history=False):
     start = time.perf_counter()
-    result = trace_bundle(system, origins, directions, wavelength)
+    result = trace_bundle(system, origins, directions, wavelength, keep_history=keep_history)
     result["elapsed"] = time.perf_counter() - start
     return result
 
@@ -185,7 +185,10 @@ def main():
     bundle_system = build_doublet_pupil_system()
 
     scalar = scalar_trace(scalar_system, origins, directions, wavelength)
-    bundle = bundle_trace(bundle_system, origins, directions, wavelength)
+    bundle = bundle_trace(bundle_system, origins, directions, wavelength, keep_history=True)
+
+    bundle_rays = Kos.raykeeper(bundle_system)
+    bundle_rays.extend_bundle_result(bundle, wavelength)
 
     active = scalar["active"]
     max_hit_error = np.max(
@@ -196,7 +199,9 @@ def main():
     )
 
     scalar_metrics = spot_metrics(scalar["final_hits"][active])
-    bundle_metrics = spot_metrics(bundle["final_hits"][active])
+    bundle_x, bundle_y, bundle_z, _l, _m, _n = bundle_rays.pick(-1)
+    bundle_points = np.column_stack([bundle_x, bundle_y, bundle_z])
+    bundle_metrics = spot_metrics(bundle_points)
     speedup = scalar["elapsed"] / bundle["elapsed"] if bundle["elapsed"] > 0.0 else float("inf")
 
     print("\nDoublet pupil bundle tracing")
@@ -213,7 +218,7 @@ def main():
     print(f"Bundle RMS spot: {bundle_metrics['rms']:.6e} mm")
 
     fig, ax = plt.subplots(1, 1, figsize=(6, 5), constrained_layout=True)
-    ax.plot(bundle["final_hits"][active, 0], bundle["final_hits"][active, 1], "x")
+    ax.plot(bundle_x, bundle_y, "x")
     ax.set_title("Doublet pupil rays traced as one bundle")
     ax.set_xlabel("image x [mm]")
     ax.set_ylabel("image y [mm]")

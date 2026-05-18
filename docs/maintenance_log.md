@@ -2349,3 +2349,78 @@ Add pupil bundle tracing example
 - Register the example in the examples index
 - Update the maintenance log
 ```
+
+### 2026-05-18 - Bridge Bundle Results Into RayKeeper
+
+Goal:
+
+- Let experimental bundle traces feed the existing `raykeeper` workflow, so
+  bundled rays can be analyzed and plotted with familiar `raykeeper.pick()`
+  patterns.
+
+Files changed:
+
+- `KrakenOS/BundleTrace.py`
+- `KrakenOS/RayKeeper.py`
+- `KrakenOS/Examples/Examp_Doublet_Lens_Pupil_Bundle.py`
+- `tests/test_trace_bundle.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added `keep_history=True` to `trace_bundle()` so the experimental tracer can
+  retain per-surface global hits, local hits, incident directions, outgoing
+  directions, local directions, and normals.
+- Added `bundle_to_raykeeper_results()` to convert a history-enabled bundle
+  result into the result dictionaries already accepted by `raykeeper`.
+- Added `raykeeper.extend_bundle_result()` as an additive helper; existing
+  `push()` and `extend_results()` behavior remains unchanged.
+- Updated the doublet pupil bundle example to use:
+  - `PupilCalc.Pattern2Field()`;
+  - `trace_bundle(..., keep_history=True)`;
+  - `raykeeper.extend_bundle_result(...)`;
+  - `raykeeper.pick(-1)` for spot analysis.
+- Added a regression test confirming that a bundle-loaded `raykeeper` matches
+  scalar `system.Trace()` final positions and directions for a simple lens.
+
+Current limitations:
+
+- The reconstructed `raykeeper` records preserve geometry and direction data
+  for analysis/display, but coating and energy bookkeeping are filled with
+  neutral placeholder values until the bundled tracer implements full coating
+  accounting.
+- The feature remains experimental and internal.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\BundleTrace.py KrakenOS\RayKeeper.py KrakenOS\Examples\Examp_Doublet_Lens_Pupil_Bundle.py
+python KrakenOS\Examples\Examp_Doublet_Lens_Pupil_Bundle.py
+python -m pytest tests\test_trace_bundle.py -q
+```
+
+Observed result:
+
+- Doublet pupil bundle example:
+  - 542 interior pupil rays;
+  - scalar Trace time: about `0.142 s`;
+  - bundle Trace time with history: about `0.0025 s`;
+  - speedup: about `58x`;
+  - same active mask: `True`;
+  - maximum final-hit error vs scalar: about `1.2e-14 mm`.
+- `tests/test_trace_bundle.py`: `9 passed`.
+
+Suggested commit:
+
+```text
+Bridge bundle traces into raykeeper
+```
+
+```text
+- Add history output to experimental trace_bundle
+- Convert bundle history into raykeeper-compatible records
+- Add raykeeper.extend_bundle_result helper
+- Use raykeeper in the pupil bundle example
+- Cover raykeeper bundle loading in trace bundle tests
+- Update the maintenance log
+```

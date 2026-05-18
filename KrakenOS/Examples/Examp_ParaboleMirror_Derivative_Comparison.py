@@ -9,7 +9,9 @@ This example compares the same shifted parabolic mirror traced in two modes:
 
 The optical model is intentionally close to ``Examp_ParaboleMirror_Shift.py``.
 The comparison reports a simple RMS spot radius and plots both spot diagrams
-side by side.
+side by side. The plots remove the centroid and show the remaining residual in
+femtometers. This intentionally exposes the numerical floor of the calculation:
+the visible bands are roundoff-scale artifacts, not physical aberrations.
 
 What this example teaches:
 - a parabola is a conic surface, so KrakenOS can now use analytical sag slopes;
@@ -19,7 +21,7 @@ What this example teaches:
 
 Expected output:
 - printed timing and RMS spot radius for both methods;
-- side-by-side spot diagrams.
+- side-by-side residual spot diagrams at femtometer scale.
 """
 
 import sys
@@ -102,6 +104,8 @@ def spot_metrics(spot_x, spot_y):
         "centroid": (cen_x, cen_y),
         "rms": np.sqrt(np.mean(radius * radius)),
         "max_radius": np.max(radius),
+        "rms_fm": np.sqrt(np.mean(radius * radius)) * 1.0e12,
+        "max_radius_fm": np.max(radius) * 1.0e12,
     }
 
 
@@ -121,13 +125,18 @@ def run_case(label, force_numerical_derivative):
 
 
 def plot_spot(ax, result):
-    ax.plot(result["spot_x"], result["spot_y"], "x", markersize=4)
+    cen_x, cen_y = result["metrics"]["centroid"]
+    residual_x_fm = (result["spot_x"] - cen_x) * 1.0e12
+    residual_y_fm = (result["spot_y"] - cen_y) * 1.0e12
+
+    ax.plot(residual_x_fm, residual_y_fm, "x", markersize=4)
     ax.set_title(
         f"{result['label']}\n"
-        f"RMS = {result['metrics']['rms']:.3e} mm"
+        f"RMS = {result['metrics']['rms']:.3e} mm "
+        f"({result['metrics']['rms_fm']:.3f} fm)"
     )
-    ax.set_xlabel("x [mm]")
-    ax.set_ylabel("y [mm]")
+    ax.set_xlabel("residual x [fm]")
+    ax.set_ylabel("residual y [fm]")
     ax.axis("equal")
     ax.grid(True, alpha=0.25)
 
@@ -143,16 +152,23 @@ def main():
         print(f"\n{result['label']}:")
         print(f"  time:       {result['elapsed']:.6f} s")
         print(f"  RMS spot:   {result['metrics']['rms']:.12e} mm")
+        print(f"              {result['metrics']['rms_fm']:.6e} fm")
         print(f"  max radius: {result['metrics']['max_radius']:.12e} mm")
+        print(f"              {result['metrics']['max_radius_fm']:.6e} fm")
         print(f"  centroid:   ({centroid[0]:.12e}, {centroid[1]:.12e}) mm")
 
     improvement = numerical["metrics"]["rms"] / analytical["metrics"]["rms"]
     print(f"\nRMS improvement factor: {improvement:.3f}x")
+    print(
+        "\nNote: the analytical spot is already at femtometer-scale residuals. "
+        "Any visible banding in the plot is a floating-point numerical floor, "
+        "not a physical image-quality feature."
+    )
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.5), constrained_layout=True)
     plot_spot(axes[0], analytical)
     plot_spot(axes[1], numerical)
-    fig.suptitle("Shifted parabolic mirror spot comparison")
+    fig.suptitle("Shifted parabolic mirror residual spot comparison")
     plt.show()
 
 

@@ -1382,3 +1382,55 @@ Document analytical and numerical derivatives
 - Link derivative examples from the example guide
 - Update the maintenance log
 ```
+
+### 2026-05-17 - Clarify Parabolic Mirror Numerical Floor
+
+Goal:
+
+- Make the parabolic mirror comparison easier to interpret by showing that the
+  remaining spot is a floating-point numerical floor, not a physical aberration.
+
+Files changed:
+
+- `KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py`
+- `docs/manual/surfaces.md`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Updated the parabolic mirror derivative comparison example to plot residual
+  spot coordinates with the centroid removed.
+- Changed the plot scale to femtometers so the near-perfect analytical result
+  is labeled honestly.
+- Printed RMS and maximum radius in both millimeters and femtometers.
+- Added an explicit note explaining that visible banding at this scale is a
+  floating-point numerical floor.
+- Added the same interpretation note to the surfaces manual.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\Examples\Examp_ParaboleMirror_Derivative_Comparison.py
+$env:MPLBACKEND = "Agg"; python KrakenOS\Examples\Examp_ParaboleMirror_Derivative_Comparison.py
+```
+
+Expected result:
+
+- The example should run successfully.
+- The analytical case should remain around `5e-14 mm` RMS.
+- The plot should show centered residuals in femtometers, making the numerical
+  floor explicit.
+
+Suggested commit:
+
+```text
+Clarify parabolic mirror numerical floor
+```
+
+```text
+- Plot parabolic mirror residual spots in femtometers
+- Print RMS and maximum spot radius in mm and fm
+- Explain that visible banding is a floating-point numerical floor
+- Document the interpretation in the surfaces manual
+- Update the maintenance log
+```

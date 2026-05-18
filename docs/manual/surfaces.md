@@ -111,6 +111,14 @@ Recommended examples:
 - [`Examp_ExtraShape_With_Derivative.py`](../../KrakenOS/Examples/Examp_ExtraShape_With_Derivative.py)
 - [`Examp_ParaboleMirror_Derivative_Comparison.py`](../../KrakenOS/Examples/Examp_ParaboleMirror_Derivative_Comparison.py)
 
+The parabolic mirror comparison is intentionally a near-perfect test case. A
+parabola should focus a collimated bundle to a point in the ideal model, so the
+remaining spot is mostly a numerical residual from floating-point arithmetic,
+coordinate transformations, intersection tolerance, and ray-data projection.
+Visible stripes or bands in that example occur only because the plot is zoomed
+to femtometer-scale residuals. They should be read as the numerical floor of
+the calculation, not as a physical aberration.
+
 ## Reserved Materials
 
 Common special values for `Glass` include:

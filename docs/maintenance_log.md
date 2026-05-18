@@ -2289,3 +2289,63 @@ Add parabolic mirror bundle tracing example
 - Register the example in the examples index
 - Update the maintenance log
 ```
+
+### 2026-05-18 - Add Pupil Bundle Tracing Example
+
+Goal:
+
+- Demonstrate that `PupilCalc.Pattern2Field()` already produces ray-origin and
+  direction arrays that can feed the experimental `trace_bundle()` workflow
+  directly.
+
+Files changed:
+
+- `KrakenOS/Examples/Examp_Doublet_Lens_Pupil_Bundle.py`
+- `KrakenOS/Examples/EXAMPLES_INDEX.md`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a didactic doublet-lens pupil example based on
+  `Examp_Doublet_Lens_Pupil.py`.
+- The example computes pupil properties with `PupilCalc`, generates two field
+  ray sets with `Pattern2Field()`, then compares:
+  - scalar `system.Trace()` called one ray at a time;
+  - experimental `trace_bundle()` called once for the whole pupil-ray bundle.
+- The example keeps the ray set inside the normalized pupil rim
+  (`r < 0.98`) so the comparison focuses on tracing speed and accuracy rather
+  than floating-point inclusion at the exact aperture boundary.
+- It reports ray count, active rays, scalar time, bundle time, speedup,
+  active-mask equality, final-hit error, direction error, and RMS spot radius.
+- It plots the image-plane bundle spot.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\Examples\Examp_Doublet_Lens_Pupil_Bundle.py
+python KrakenOS\Examples\Examp_Doublet_Lens_Pupil_Bundle.py
+```
+
+Observed result:
+
+- 542 pupil-generated interior rays;
+- scalar Trace time: about `0.142 s`;
+- bundle Trace time: about `0.0023 s`;
+- speedup: about `62x`;
+- same active mask: `True`;
+- maximum final-hit error vs scalar: about `1.2e-14 mm`.
+
+Suggested commit:
+
+```text
+Add pupil bundle tracing example
+```
+
+```text
+- Add doublet pupil example using trace_bundle
+- Feed PupilCalc Pattern2Field arrays directly into bundled tracing
+- Compare scalar Trace and bundle Trace timing and accuracy
+- Keep rays inside the pupil rim for clean active-mask comparison
+- Register the example in the examples index
+- Update the maintenance log
+```

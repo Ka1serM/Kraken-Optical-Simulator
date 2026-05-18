@@ -17,6 +17,7 @@
 | `Examp_Doublet_Lens_Cylinder.py` | Intermediate | Cylindrical optics | Doublet lens with a cylindrical surface term. | - |
 | `Examp_Doublet_Lens_NonSec-AR_Coating.py` | Advanced | Non-sequential tracing | Non-sequential doublet trace with coating tables. | - |
 | `Examp_Doublet_Lens_NonSec.py` | Advanced | Non-sequential tracing | Non-sequential doublet trace. | - |
+| `Examp_Doublet_Lens_Pupil_Bundle.py` | Advanced | Performance experiments | PupilCalc-generated doublet rays traced as one experimental bundle. | - |
 | `Examp_Doublet_Lens_Pupil.py` | Intermediate | Pupil tracing | Doublet lens with pupil calculation. | - |
 | `Examp_Doublet_Lens_Pupil_Seidel.py` | Advanced | Aberration analysis | Doublet pupil calculation with Seidel terms. | - |
 | `Examp_Doublet_Lens_Tilt-Nulls.py` | Intermediate | Tilted components | Tilted doublet with NULL coordinate surfaces. | - |

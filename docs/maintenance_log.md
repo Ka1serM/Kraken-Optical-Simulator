@@ -2230,3 +2230,62 @@ Add experimental trace bundle example
 - Register the example in the examples index and subset test
 - Update the maintenance log
 ```
+
+### 2026-05-18 - Add Parabolic Mirror Bundle Example
+
+Goal:
+
+- Provide a direct user-facing version of the shifted parabolic mirror
+  derivative comparison that traces the whole ray set with the experimental
+  `trace_bundle()` helper under the standard analytical-derivative condition.
+
+Files changed:
+
+- `KrakenOS/Examples/Examp_ParaboleMirror_Bundle_Comparison.py`
+- `KrakenOS/Examples/EXAMPLES_INDEX.md`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added a new example based on
+  `Examp_ParaboleMirror_Derivative_Comparison.py`.
+- The example builds the same shifted parabolic mirror and deterministic pupil
+  ray set, then compares:
+  - scalar `system.Trace()` one ray at a time;
+  - experimental `trace_bundle()` for all rays together.
+- Both paths use analytical sag derivatives; the example no longer mixes this
+  performance comparison with the forced numerical fallback mode.
+- It reports timing, speedup, active-mask equality, final-hit error, direction
+  error, RMS spot radius, maximum spot radius, and centroid.
+- It plots the residual bundle spot at femtometer scale.
+
+Verification:
+
+```powershell
+python -m py_compile KrakenOS\Examples\Examp_ParaboleMirror_Bundle_Comparison.py
+python KrakenOS\Examples\Examp_ParaboleMirror_Bundle_Comparison.py
+```
+
+Observed result:
+
+- Analytical-derivative standard condition:
+  - 697 rays;
+  - scalar Trace time: about `0.090 s`;
+  - bundle Trace time: about `0.001 s`;
+  - speedup: about `88x`;
+  - maximum final-hit error vs scalar: about `5.7e-14 mm`;
+  - maximum direction error vs scalar: `0.0`.
+
+Suggested commit:
+
+```text
+Add parabolic mirror bundle tracing example
+```
+
+```text
+- Add shifted parabolic mirror example using trace_bundle
+- Compare scalar Trace and bundled tracing with analytical derivatives
+- Report timing, accuracy, and residual spot metrics
+- Register the example in the examples index
+- Update the maintenance log
+```

@@ -1434,3 +1434,54 @@ Clarify parabolic mirror numerical floor
 - Document the interpretation in the surfaces manual
 - Update the maintenance log
 ```
+
+### 2026-05-17 - Protect Vectorized Surface Derivatives
+
+Goal:
+
+- Preserve KrakenOS' existing ability to evaluate surface sag and derivatives
+  over arrays of coordinates, preparing the ground for future bundle ray
+  tracing without changing the current scalar `Trace()` workflow.
+
+Files changed:
+
+- `tests/test_surface_analytic_derivatives.py`
+- `docs/maintenance_log.md`
+
+Changes:
+
+- Added tests proving that analytical derivatives accept vector `numpy` inputs
+  for:
+  - parabolic/conic surfaces;
+  - conic plus aspheric terms;
+  - Zernike terms;
+  - axicon terms away from the apex.
+- Added a vector finite-difference comparison for a mixed conic/asphere/Zernike
+  surface.
+- Kept the tests focused on surface math only; no optical physics or tracing
+  algorithms were changed.
+
+Verification:
+
+```powershell
+python -m pytest tests\test_surface_analytic_derivatives.py -q
+```
+
+Expected result:
+
+- All analytical derivative tests should pass.
+- The new tests should confirm that vector inputs return vector derivatives
+  with finite values and match vector finite differences.
+
+Suggested commit:
+
+```text
+Protect vectorized surface derivatives
+```
+
+```text
+- Add tests for vector inputs in analytical surface derivatives
+- Compare vector analytical slopes against vector finite differences
+- Cover conic, asphere, Zernike, and axicon derivative paths
+- Update the maintenance log
+```

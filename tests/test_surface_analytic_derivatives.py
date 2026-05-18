@@ -64,6 +64,71 @@ def test_summed_surface_derivative_matches_summed_sag_finite_difference():
     assert_derivative_matches_finite_difference(surface, x=2.4, y=-1.9)
 
 
+def test_analytic_derivatives_accept_vector_inputs():
+    import KrakenOS as Kos
+
+    x = np.array([1.0, 5.0, 10.0, 20.0])
+    y = np.array([2.0, -3.0, 12.0, -7.0])
+
+    parabola = Kos.surf()
+    parabola.Rc = -2000.0
+    parabola.k = -1.0
+    parabola.Diameter = 300.0
+    parabola.build_surface_function()
+
+    asphere = Kos.surf()
+    asphere.Rc = 100.0
+    asphere.AspherData = np.zeros(200)
+    asphere.AspherData[0] = 1e-8
+    asphere.AspherData[1] = -1e-12
+    asphere.Diameter = 100.0
+    asphere.build_surface_function()
+
+    zernike = Kos.surf()
+    zernike.Diameter = 100.0
+    zernike.ZNK = np.zeros(36)
+    zernike.ZNK[3] = 0.01
+    zernike.ZNK[4] = -0.02
+    zernike.build_surface_function()
+
+    axicon = Kos.surf()
+    axicon.Axicon = 2.0
+    axicon.Diameter = 100.0
+    axicon.build_surface_function()
+
+    for surface in [parabola, asphere, zernike, axicon]:
+        dzdx, dzdy = surface.sigma_derivative(x, y, 0)
+        assert np.shape(dzdx) == np.shape(x)
+        assert np.shape(dzdy) == np.shape(y)
+        assert np.all(np.isfinite(dzdx))
+        assert np.all(np.isfinite(dzdy))
+
+
+def test_vector_analytic_derivatives_match_vector_finite_difference():
+    import KrakenOS as Kos
+
+    surface = Kos.surf()
+    surface.Rc = 120.0
+    surface.k = -0.35
+    surface.AspherData = np.zeros(200)
+    surface.AspherData[0] = 3e-8
+    surface.AspherData[2] = -2e-14
+    surface.ZNK = np.zeros(36)
+    surface.ZNK[2] = 0.007
+    surface.ZNK[5] = -0.003
+    surface.Diameter = 80.0
+    surface.build_surface_function()
+
+    x = np.array([1.0, 5.0, 10.0, 20.0])
+    y = np.array([2.0, -3.0, 12.0, -7.0])
+
+    analytical = surface.sigma_derivative(x, y, 0)
+    finite = finite_difference_derivative(surface, x, y)
+
+    assert np.allclose(analytical[0], finite[0], rtol=1e-4, atol=1e-6)
+    assert np.allclose(analytical[1], finite[1], rtol=1e-4, atol=1e-6)
+
+
 def test_extra_data_derivative_is_optional_and_backwards_compatible():
     import KrakenOS as Kos
 

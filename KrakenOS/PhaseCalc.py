@@ -399,9 +399,19 @@ def Posc(X0, Y0, L, M, N, DeltaZ):
 
 
 
-def Phase(PUPIL):
+def Phase(PUPIL, return_reference_position=False):
 #############################################################
-    """ Crea una pupila con las propiedades pasadas como parámetro"""
+    """Calculate pupil wavefront phase.
+
+    Parameters
+    ----------
+    PUPIL : PupilCalc
+        Configured pupil used for the wavefront calculation.
+    return_reference_position : bool, optional
+        When true, append the chief-ray image-plane intersection used as the
+        center of the reference sphere to the returned tuple. The position is
+        returned as ``[x, y, z]`` in the optical system's coordinate units.
+    """
 
 
     # alpha = abcd[0]
@@ -572,7 +582,16 @@ def Phase(PUPIL):
     RR.clean()
     RR.push()
 
-    return ((YPUP / Pup.RadPupInp), (XPUP / Pup.RadPupInp), Wi, np.abs(P2V))
+    result = (
+        (YPUP / Pup.RadPupInp),
+        (XPUP / Pup.RadPupInp),
+        Wi,
+        np.abs(P2V),
+    )
+    if return_reference_position:
+        reference_image_position = np.asarray([Xcc, Ycc, Zcc], dtype=float)
+        return (*result, reference_image_position)
+    return result
 
 
 
@@ -773,4 +792,3 @@ def Phase(PUPIL):
 #     return ((YPUP / Pup.RadPupInp), (XPUP / Pup.RadPupInp), Wi, np.abs(P2V))
 
 #     # return SYSTEM
-

@@ -205,8 +205,6 @@ def psf(COEF, Focal, Diameter, Wave, pixels=600, PupilSample=4,  plot=0, sqr=0):
     vmx=v[N-1]*1e6
     vmn=v[0]*1e6
 
-    I = np.rot90(I)
-
     # I = W
     # Saturando la Imagen
     if plot !=0:
@@ -361,8 +359,6 @@ def PsfPlus(COEF, Focal, Diameter, Wave, pixels=600, PupilSample=4,  plot=0, sqr
     umn=u[0]*1e6
     vmx=v[N-1]*1e6
     vmn=v[0]*1e6
-
-    I = np.rot90(I)
 
     # I = W
 
